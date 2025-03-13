@@ -37,6 +37,7 @@ uses
   FireDAC.DApt.Intf,
   FireDAC.DApt,
   FireDAC.Comp.DataSet,
+  FireDAC.Stan.StorageBin,
 
   Model.Conexao.Firedac.Interfaces,
   Model.Conexao.Configuracao.Firebird.Interfaces;
@@ -46,6 +47,9 @@ type
     private
       FConexao              : TFDConnection;
       FDriverFB             : TFDPhysFBDriverLink;
+      FDGUIxWaitCursor      : TFDGUIxWaitCursor;
+      FDStanStorageBinLink  : TFDStanStorageBinLink;
+
       FConfiguracaoFirebird : iConfiguracaoFirebird;
     public
       constructor Create;
@@ -71,6 +75,8 @@ constructor TModelConexaoFiredacFirebird.Create;
 begin
   FConexao              := TFDConnection.Create(nil);
   FDriverFB             := TFDPhysFBDriverLink.Create(nil);
+  FDGUIxWaitCursor      := TFDGUIxWaitCursor.Create(nil);
+  FDStanStorageBinLink  := TFDStanStorageBinLink.Create(nil);
   FConfiguracaoFirebird := TConfiguracaoFirebird.New;
   ConfigurarFirebird;
 end;
@@ -79,6 +85,8 @@ destructor TModelConexaoFiredacFirebird.Destroy;
 begin
   FreeAndNil(FConexao);
   FreeAndNil(FDriverFB);
+  FreeAndNil(FDGUIxWaitCursor);
+  FreeAndNil(FDStanStorageBinLink);
   inherited;
 end;
 
@@ -120,19 +128,18 @@ function TModelConexaoFiredacFirebird.ConfigurarFirebird: iConexao;
 begin
   Result := Self;
   try
-    FConexao.Params.Add('Server='+ FConfiguracaoFirebird.ServerHost);
-    FConexao.Params.Add('Port=  '+ FConfiguracaoFirebird.Port);
-    if FConfiguracaoFirebird.Servidor='1' then
-      FConexao.Params.Database    := FConfiguracaoFirebird.Database
-      else
-      FConexao.Params.Database    := FConfiguracaoFirebird.ServerHost+':'+FConfiguracaoFirebird.Database;
-      FConexao.Params.UserName    := FConfiguracaoFirebird.UserName;
-      FConexao.Params.Password    := FConfiguracaoFirebird.Password;
-      FConexao.Params.DriverID    := FConfiguracaoFirebird.DriverName;
-      FConexao.Params.Add('utf8mb4');
+    if FConfiguracaoFirebird.Servidor='1' then //1 quer dizer que a máquina é servidor, caso for 0 é terminal
+      FConexao.Params.Values['Database'] := FConfiguracaoFirebird.Database
+    else
+      FConexao.Params.Values['Database'] := FConfiguracaoFirebird.Server+':'+FConfiguracaoFirebird.Database;
 
-    //FDPhysFBDriverLink1.VendorLib := VarVendorLib;
-    FDriverFB.VendorLib         := FConfiguracaoFirebird.VendorLib;
+    FConexao.Params.Values['DriverID']  := FConfiguracaoFirebird.DriverID;
+    FConexao.Params.Values['User_Name'] := FConfiguracaoFirebird.UserName;
+    FConexao.Params.Values['Password']  := FConfiguracaoFirebird.Password;
+    FConexao.Params.Values['Server']    := FconfiguracaoFirebird.Server;
+    FConexao.Params.Values['Port']      := FConfiguracaoFirebird.Port;
+    FConexao.Params.Values['VendorLib'] := FConfiguracaoFirebird.VendorLib;
+    FDriverFB.VendorLib                 := FConfiguracaoFirebird.VendorLib;
     FConexao.LoginPrompt        := False;
     FConexao.Connected;
   except

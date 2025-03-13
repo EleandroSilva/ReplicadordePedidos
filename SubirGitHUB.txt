@@ -1,20 +1,17 @@
-git adecho "# ReplicarPedidos" >> README.md
+…or create a new repository on the command line
+echo "# ReplicadordePedidos" >> README.md
 git init
 git add README.md
 git commit -m "first commit"
 git branch -M main
-git remote add origin https://github.com/EleandroSilva/ReplicarPedidos.git
+git remote add origin https://github.com/EleandroSilva/ReplicadordePedidos.git
 git push -u origin main
 
 
 
-Testar este comando quando fazer alteração, não dando certo testar o último
-git remote add origin https://github.com/EleandroSilva/ReplicarPedidos.git
+
+update
+…or push an existing repository from the command line
+git remote add origin https://github.com/EleandroSilva/ReplicadordePedidos.git
 git branch -M main
 git push -u origin main
-
-…or push an existing repository from the command line
-git add .
-git status
-git commit -m "msg alteracao"
-git push

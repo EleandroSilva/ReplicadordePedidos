@@ -128,11 +128,7 @@ function TModelConexaoFiredacFirebird.ConfigurarFirebird: iConexao;
 begin
   Result := Self;
   try
-    if FConfiguracaoFirebird.Servidor='1' then //1 quer dizer que a máquina é servidor, caso for 0 é terminal
-      FConexao.Params.Values['Database'] := FConfiguracaoFirebird.Database
-    else
-      FConexao.Params.Values['Database'] := FConfiguracaoFirebird.Server+':'+FConfiguracaoFirebird.Database;
-
+    FConexao.Params.Values['Database']  := FConfiguracaoFirebird.Database;
     FConexao.Params.Values['DriverID']  := FConfiguracaoFirebird.DriverID;
     FConexao.Params.Values['User_Name'] := FConfiguracaoFirebird.UserName;
     FConexao.Params.Values['Password']  := FConfiguracaoFirebird.Password;
