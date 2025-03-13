@@ -1,0 +1,86 @@
+{*******************************************************}
+{                    API PDV - JSON                     }
+{                      Be More Web                      }
+{          Início do projeto 23/02/2025 12:02           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.Entidade.Pessoa.Imp;
+
+interface
+
+uses
+  System.SysUtils,
+
+  Model.Entidade.Pessoa.Interfaces;
+
+type
+  TEntidadePessoa<T : iInterface> = class(TInterfacedObject, iEntidadePessoa<T>)
+    private
+      [weak]
+      FParent     : T;
+      FId         : Integer;
+      FNomePessoa : String;
+    public
+      constructor Create(Parent : T);
+      destructor Destroy; override;
+      class function New(Parent : T) : iEntidadePessoa<T>;
+
+      function Id        (Value : Integer) : iEntidadePessoa<T>; overload;
+      function Id                          : Integer;            overload;
+      function NomePessoa(Value : String)  : iEntidadePessoa<T>; overload;
+      function NomePessoa                  : String;             overload;
+
+      function &End : T;
+  end;
+
+implementation
+
+{ TEntidadePessoa<T> }
+
+constructor TEntidadePessoa<T>.Create(Parent: T);
+begin
+
+end;
+
+destructor TEntidadePessoa<T>.Destroy;
+begin
+
+  inherited;
+end;
+
+class function TEntidadePessoa<T>.New(Parent: T): iEntidadePessoa<T>;
+begin
+  Result := Self.Create(Parent);
+end;
+
+function TEntidadePessoa<T>.Id(Value: Integer): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FId    := Value;
+end;
+
+function TEntidadePessoa<T>.Id: Integer;
+begin
+  Result := FId;
+end;
+
+function TEntidadePessoa<T>.NomePessoa(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FNomePessoa := Value;
+end;
+
+function TEntidadePessoa<T>.NomePessoa: String;
+begin
+  Result := FNomePessoa;
+end;
+
+function TEntidadePessoa<T>.&End: T;
+begin
+  Result := FParent;
+end;
+
+end.

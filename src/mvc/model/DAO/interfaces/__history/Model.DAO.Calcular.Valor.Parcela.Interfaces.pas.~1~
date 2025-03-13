@@ -1,0 +1,7 @@
+unit Model.DAO.Calcular.Valor.Parcela.Interfaces;
+
+interface
+
+implementation
+
+end.

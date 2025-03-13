@@ -1,0 +1,17 @@
+unit Model.Factory.DAO.Interfaces;
+
+interface
+
+uses
+  Model.DAO.Pedidos.Interfaces;
+
+type
+  iFactoryDAO = interface
+    ['{D4B77362-B351-4C89-A8E4-0A5B57CB0AFF}']
+    function DAOPedidos;
+  end;
+
+
+implementation
+
+end.

@@ -1,0 +1,169 @@
+unit View.Entidade.Pesquisar.Pessoa;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Vcl.StdCtrls,
+  Data.DB,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Buttons,
+  Vcl.DBCtrls,
+
+  Controller.Interfaces;
+
+type
+  TfrmViewPesquisarPessoa = class(TForm)
+    pPrincipal: TPanel;
+    pTitulo: TPanel;
+    pFiltro: TPanel;
+    pBotoes: TPanel;
+    rgEscolhaTipoFiltro: TRadioGroup;
+    pDigitaConformePesquisa: TPanel;
+    Label3: TLabel;
+    edtPesquisa: TEdit;
+    pGrid: TPanel;
+    dbGrid: TDBGrid;
+    DataSource: TDataSource;
+    dbNavegador: TDBNavigator;
+    pRiscoNavegador: TPanel;
+    lConsultar: TLabel;
+    btnConsultar: TBitBtn;
+    bbSair: TBitBtn;
+    procedure edtPesquisaKeyPress(Sender: TObject; var Key: Char);
+    procedure dbGridDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure bbSairClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btnConsultarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure dbGridDblClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    FController : iController;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmViewPesquisarPessoa: TfrmViewPesquisarPessoa;
+
+implementation
+
+uses
+  Controller.Imp, ReplicarPedidos;
+
+{$R *.dfm}
+
+procedure TfrmViewPesquisarPessoa.bbSairClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmViewPesquisarPessoa.btnConsultarClick(Sender: TObject);
+begin
+  if edtPesquisa.Text = '' then
+    FController
+      .FactoryDAO
+        .DAOPessoa
+          .GetAll
+            .DataSet(DataSource)
+  else
+  case rgEscolhaTipoFiltro.ItemIndex  of
+    0 : FController
+          .FactoryDAO
+            .DAOPessoa
+              .GetbyId(edtPesquisa.Text)
+                .DataSet(DataSource);
+    1 : FController
+          .FactoryDAO
+            .DAOPessoa
+              .GetbyParams(edtPesquisa.Text)
+                .DataSet(DataSource);
+  end;
+
+  if DataSource.DataSet.IsEmpty then
+    ShowMessage('Reguistro não encontrado!');
+end;
+
+procedure TfrmViewPesquisarPessoa.dbGridDblClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmViewPesquisarPessoa.dbGridDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  if Odd(TDBGrid(Sender).DataSource.DataSet.RecNo) then
+    TDBGrid(Sender).Canvas.Brush.Color := clSkyBlue
+  else
+    TDBGrid(Sender).Canvas.Brush.Color := clWhite;
+
+  if (State = [GdSelected]) or (State = [GdFocused]) or
+    (State = [GdSelected, GdFocused]) then
+  begin
+    TDBGrid(Sender).Canvas.Brush.Color := cl3DLight;
+    TDBGrid(Sender).Canvas.Font.Color := clBlack;
+  end;
+  TDBGrid(Sender).DefaultDrawDataCell(Rect, Column.Field, State);
+end;
+
+procedure TfrmViewPesquisarPessoa.edtPesquisaKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if rgEscolhaTipoFiltro.ItemIndex =0 then
+    if not (Key in ['0'..'9', Chr(8), Chr(6)]) then Key := #0;
+end;
+
+procedure TfrmViewPesquisarPessoa.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  if not DataSource.DataSet.IsEmpty then
+  begin
+    frmReplicarPedidos.edtNovoCliente.Text  := DataSource.DataSet.FieldByName('Id').AsString;
+    frmReplicarPedidos.lNomeCliente.Caption := DataSource.DataSet.FieldByName('NomePessoa').AsString;
+  end;
+end;
+
+procedure TfrmViewPesquisarPessoa.FormCreate(Sender: TObject);
+begin
+  FController := TController.New;
+end;
+
+procedure TfrmViewPesquisarPessoa.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #13 then
+  begin
+    key := #0;
+    Perform(CM_Dialogkey, VK_TAB, 0);
+  end;
+end;
+
+procedure TfrmViewPesquisarPessoa.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case Key of
+    VK_Escape:
+      Close;
+  end;
+end;
+
+procedure TfrmViewPesquisarPessoa.FormShow(Sender: TObject);
+begin
+  btnConsultar.Click;
+end;
+
+end.

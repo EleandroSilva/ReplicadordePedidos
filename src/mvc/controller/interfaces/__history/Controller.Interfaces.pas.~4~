@@ -1,0 +1,13 @@
+unit Controller.Interfaces;
+
+interface
+
+type
+  iController = Interface
+    ['{818AFFBE-F8FD-4E1F-AF87-3B8DF2A308F5}']
+    function Factory : iFactoryDAO;
+  End;
+
+implementation
+
+end.

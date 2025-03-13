@@ -1,0 +1,92 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 26/02/2025 17:02           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.Entidade.Calcular.Valor.Parcela.Imp;
+
+interface
+
+uses
+  Model.Entidade.Calcular.Valor.Parcela.Interfaces;
+
+type
+  TCalcularValorParcela<T : iInterface> = class(TInterfacedObject, iEntidadeCalcularValorParcela<T>)
+    private
+      [weak]
+      FParent     : T;
+      FIdPedido   : Integer;
+      FValorTotalPedido : Currency;
+      FValorParcela     : Currency;
+      FValorRestante    : Currency;
+    public
+      function IdPedido         (Value : Integer)  : iEntidadeCalcularValorParcela<T>; overload;
+      function IdPedido                            : Integer;                          overload;
+      function ValorTotalPedido (Value : Currency) : iEntidadeCalcularValorParcela<T>; overload;
+      function ValorTotalPedido                    : Currency;                         overload;
+      function ValorParcela     (Value : Currency) : iEntidadeCalcularValorParcela<T>; overload;
+      function ValorParcela                        : Currency;                         overload;
+      function ValorRestante    (Value : Currency) : iEntidadeCalcularValorParcela<T>; overload;
+      function ValorRestante                       : Currency;                         overload;
+
+      function &End : T;
+
+  end;
+
+implementation
+
+{ TCalcularValorParcela<T> }
+
+function TCalcularValorParcela<T>.IdPedido(Value: Integer): iEntidadeCalcularValorParcela<T>;
+begin
+  Result := Self;
+  FIdPedido := Value;
+end;
+
+function TCalcularValorParcela<T>.IdPedido: Integer;
+begin
+  Result := FIdPedido;
+end;
+
+function TCalcularValorParcela<T>.ValorParcela(Value: Currency): iEntidadeCalcularValorParcela<T>;
+begin
+  Result := Self;
+  FValorParcela := Value;
+end;
+
+function TCalcularValorParcela<T>.ValorParcela: Currency;
+begin
+  Result := FValorParcela;
+end;
+
+function TCalcularValorParcela<T>.ValorRestante(Value: Currency): iEntidadeCalcularValorParcela<T>;
+begin
+  Result := Self;
+  FValorRestante := Value;
+end;
+
+function TCalcularValorParcela<T>.ValorRestante: Currency;
+begin
+  Result := FValorRestante;
+end;
+
+function TCalcularValorParcela<T>.ValorTotalPedido(Value: Currency): iEntidadeCalcularValorParcela<T>;
+begin
+  Result := Self;
+  FValorTotalPedido := Value;
+end;
+
+function TCalcularValorParcela<T>.ValorTotalPedido: Currency;
+begin
+  Result := FValorTotalPedido;
+end;
+
+function TCalcularValorParcela<T>.&End: T;
+begin
+  Result := FParent;
+end;
+
+end.

@@ -1,0 +1,32 @@
+{*******************************************************}
+{                    API PDV - JSON                     }
+{                      Be More Web                      }
+{          Início do projeto 23/02/2025 12:02           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.Entidade.Pessoa.Imp;
+
+interface
+
+uses
+  System.SysUtils,
+
+  Model.Entidade.Pessoa.Interfaces;
+
+type
+  TEntidadePessoa<T : iInterface> = class(TInterfacedObject, iEntidadePessoa)
+    private
+      [weak]
+      FParent     : T;
+      FIdPessoa   : Integer;
+      FNomePessoa : String;
+    public
+
+  end;
+
+implementation
+
+end.

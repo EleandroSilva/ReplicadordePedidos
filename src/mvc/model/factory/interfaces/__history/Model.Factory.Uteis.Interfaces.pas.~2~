@@ -1,0 +1,13 @@
+unit Model.Factory.Uteis.Interfaces;
+
+interface
+
+type
+  iFactoryUteis = interface
+    ['{1AFBC0EF-D3C8-497A-9A05-D8F62B04FDFA}']
+
+  end;
+
+implementation
+
+end.

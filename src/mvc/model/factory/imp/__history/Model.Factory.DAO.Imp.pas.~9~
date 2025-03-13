@@ -1,0 +1,73 @@
+{*******************************************************}
+{                    API PDV - JSON                     }
+{                      Be More Web                      }
+{          Início do projeto 23/04/2025 12:02           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.Factory.DAO.Imp;
+
+interface
+
+uses
+  Model.Factory.DAO.Interfaces,
+  Model.DAO.Pedidos.Interfaces,
+  Model.DAO.Pedidos.Itens.Interfaces;
+
+type
+  TFactoryDAO = class(TInterfacedObject, iFactoryDAO)
+    private
+      FDAOPedidos      : iDAOPedidos;
+      FDAOPedidosItens : iDAOPedidosItens;
+    public
+      constructor Create;
+      destructor Destroy; override;
+      class function New : iFactoryDAO;
+
+      function DAOPedidos      : iDAOPedidos;
+      function DAOPedidosItens : iDAOPedidosItens;
+  end;
+
+implementation
+
+uses
+  Model.DAO.Pedidos.Imp,
+  Model.DAO.Pedidos.Itens.Imp;
+
+{ TFactoryDAO }
+
+constructor TFactoryDAO.Create;
+begin
+  //
+end;
+
+destructor TFactoryDAO.Destroy;
+begin
+  inherited;
+end;
+
+class function TFactoryDAO.New: iFactoryDAO;
+begin
+  Result := Self.Create;
+end;
+
+
+function TFactoryDAO.DAOPedidos: iDAOPedidos;
+begin
+  if not Assigned(FDAOPedidos) then
+    FDAOPedidos := TDAOPedidos.New;
+
+  Result := FDAOPedidos;
+end;
+
+function TFactoryDAO.DAOPedidosItens: iDAOPedidosItens;
+begin
+  if not Assigned(FDAOPedidosItens) then
+    FDAOPedidosItens := TDAOPedidosItens.New;
+
+  Result := FDAOPedidosItens;
+end;
+
+end.

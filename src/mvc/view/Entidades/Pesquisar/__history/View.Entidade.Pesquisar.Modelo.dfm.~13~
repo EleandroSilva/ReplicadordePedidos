@@ -1,0 +1,212 @@
+object frmViewPesquisarModelo: TfrmViewPesquisarModelo
+  Left = 0
+  Top = 0
+  ClientHeight = 437
+  ClientWidth = 877
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pPrincipal: TPanel
+    Left = 0
+    Top = 35
+    Width = 877
+    Height = 402
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 0
+    ExplicitTop = 0
+    ExplicitWidth = 635
+    ExplicitHeight = 299
+    object pFiltro: TPanel
+      Left = 0
+      Top = 0
+      Width = 877
+      Height = 65
+      Align = alTop
+      BevelOuter = bvNone
+      Color = 14778398
+      ParentBackground = False
+      TabOrder = 0
+      object rgEscolhaTipoFiltro: TRadioGroup
+        Left = 0
+        Top = 0
+        Width = 154
+        Height = 65
+        Align = alLeft
+        Caption = 'Escolha ordem do filtro'
+        Color = 14778398
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindow
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ItemIndex = 0
+        Items.Strings = (
+          '0 - Id Cliente'
+          '1 - Nome Cliente')
+        ParentBackground = False
+        ParentColor = False
+        ParentFont = False
+        TabOrder = 0
+        ExplicitLeft = 8
+      end
+      object pDigitaConformePesquisa: TPanel
+        Left = 154
+        Top = 0
+        Width = 723
+        Height = 65
+        Align = alClient
+        BevelOuter = bvNone
+        Color = 14778398
+        ParentBackground = False
+        TabOrder = 1
+        ExplicitLeft = 160
+        object Label3: TLabel
+          Left = 6
+          Top = 20
+          Width = 282
+          Height = 19
+          Align = alCustom
+          Caption = 'Digite filtro conforme tipo de filtro'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object edtPesquisa: TEdit
+          Left = 6
+          Top = 42
+          Width = 331
+          Height = 21
+          Align = alCustom
+          TabOrder = 0
+          OnKeyPress = edtPesquisaKeyPress
+        end
+      end
+    end
+    object pBotoes: TPanel
+      Left = 0
+      Top = 361
+      Width = 877
+      Height = 41
+      Align = alBottom
+      BevelOuter = bvNone
+      Color = 14778398
+      ParentBackground = False
+      TabOrder = 1
+      ExplicitLeft = 344
+      ExplicitTop = 184
+      ExplicitWidth = 185
+      object lConsultar: TLabel
+        Left = 108
+        Top = 0
+        Width = 514
+        Height = 41
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'Nome da consulta'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -32
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ExplicitWidth = 254
+        ExplicitHeight = 39
+      end
+      object dbNavegador: TDBNavigator
+        Left = 650
+        Top = 0
+        Width = 227
+        Height = 41
+        Margins.Left = 10
+        Margins.Top = 10
+        Margins.Right = 10
+        Margins.Bottom = 10
+        DataSource = DataSource
+        VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+        Align = alRight
+        TabOrder = 0
+        ExplicitLeft = 897
+        ExplicitHeight = 43
+      end
+      object pRiscoNavegador: TPanel
+        Left = 622
+        Top = 0
+        Width = 28
+        Height = 41
+        Align = alRight
+        BevelKind = bkSoft
+        BevelOuter = bvNone
+        TabOrder = 1
+        ExplicitLeft = 609
+        ExplicitTop = 6
+      end
+      object btnConsultar: TBitBtn
+        Left = 0
+        Top = 0
+        Width = 108
+        Height = 41
+        Margins.Left = 10
+        Margins.Top = 10
+        Margins.Right = 10
+        Margins.Bottom = 10
+        Align = alLeft
+        Caption = '&Consultar ?'
+        TabOrder = 2
+        ExplicitLeft = 8
+      end
+    end
+    object pGrid: TPanel
+      Left = 0
+      Top = 65
+      Width = 877
+      Height = 296
+      Align = alClient
+      BevelOuter = bvNone
+      TabOrder = 2
+      ExplicitLeft = 344
+      ExplicitTop = 184
+      ExplicitWidth = 185
+      ExplicitHeight = 41
+      object dbGrid: TDBGrid
+        Left = 0
+        Top = 0
+        Width = 877
+        Height = 296
+        Align = alClient
+        DataSource = DataSource
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+      end
+    end
+  end
+  object pTitulo: TPanel
+    Left = 0
+    Top = 0
+    Width = 877
+    Height = 35
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'T'#237'tulo'
+    Color = clMedGray
+    ParentBackground = False
+    TabOrder = 1
+  end
+  object DataSource: TDataSource
+    Left = 432
+    Top = 224
+  end
+end

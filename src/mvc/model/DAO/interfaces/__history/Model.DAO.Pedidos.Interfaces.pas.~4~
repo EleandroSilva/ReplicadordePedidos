@@ -1,0 +1,13 @@
+unit Model.DAO.Pedidos.Interfaces;
+
+interface
+
+type
+  iDAOPedidos = interface
+    ['{96490B79-2C30-466B-B4FD-1F43BC81C6F5}']
+
+  end;
+
+implementation
+
+end.

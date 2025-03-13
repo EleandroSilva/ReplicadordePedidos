@@ -1,0 +1,34 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 06/03/2025 19:56           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.DAO.Prazo.Pagamento.Imp;
+
+interface
+
+uses
+  Data.DB,
+
+  Model.DAO.Prazo.Pagamento.Interfaces,
+  Model.Entidade.Prazo.Pagamento.Interfaces,
+  Model.Conexao.Firedac.Interfaces,
+  Model.Conexao.Query.Interfaces;
+
+type
+  TDAOPrazoPagamento = class(TInterfacedObject, iDAOPrazoPagamento)
+    private
+      FPrazoPagamento : iEntidadePrazoPagamento<iDAOPrazoPagamento>;
+      FConexao        : iConexao;
+      FDataSet        : TDataSet;
+      FQuery          : iQuery;
+    public
+
+  end;
+
+implementation
+
+end.

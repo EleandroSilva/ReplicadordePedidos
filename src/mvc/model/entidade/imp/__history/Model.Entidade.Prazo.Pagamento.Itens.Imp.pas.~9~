@@ -1,0 +1,109 @@
+{*******************************************************}
+{          Início do projeto 06/03/2025 19:11           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.Entidade.Prazo.Pagamento.Itens.Imp;
+
+interface
+
+uses
+  Model.Entidade.Prazo.Pagamento.Itens.Interfaces;
+
+type
+  TEntidadePrazoPagamentoItens <T : iInterface> = class(TInterfacedObject, iEntidadePrazoPagamentoItens<T>)
+    private
+      [weak]
+      FParent : T;
+      FId     : String;
+      FItem   : Integer;
+      FNumeroPagamento : Integer;
+      FQuantidadedeDias : Integer;
+    public
+      constructor Create(Parent : T);
+      destructor Destroy; override;
+      class function New(Parent : T) : iEntidadePrazoPagamentoItens<T>;
+
+      function Id              (Value : String)  : iEntidadePrazoPagamentoItens<T>; overload;
+      function Id                                : String;                          overload;
+      function Item            (Value : Integer) : iEntidadePrazoPagamentoItens<T>; overload;
+      function Item                              : Integer;                         overload;
+      function NumeroPagamento (Value : Integer) : iEntidadePrazoPagamentoItens<T>; overload;
+      function NumeroPagamento                   : Integer;                         overload;
+      function QuantidadedeDias(Value : Integer) : iEntidadePrazoPagamentoItens<T>; overload;
+      function QuantidadedeDias                  : Integer;                         overload;
+
+      function &End : T;
+  end;
+
+implementation
+
+{ TEntidadePrazoPagamentoItens<T> }
+
+constructor TEntidadePrazoPagamentoItens<T>.Create(Parent: T);
+begin
+  FParent := Parent;
+end;
+
+destructor TEntidadePrazoPagamentoItens<T>.Destroy;
+begin
+  inherited;
+end;
+
+class function TEntidadePrazoPagamentoItens<T>.New(Parent: T): iEntidadePrazoPagamentoItens<T>;
+begin
+  Result := Self.Create(Parent);
+end;
+
+function TEntidadePrazoPagamentoItens<T>.Id(Value: String): iEntidadePrazoPagamentoItens<T>;
+begin
+  Result := Self;
+  FId    := Value;
+end;
+
+function TEntidadePrazoPagamentoItens<T>.Id: String;
+begin
+  Result := FId;
+end;
+
+function TEntidadePrazoPagamentoItens<T>.Item(Value: Integer): iEntidadePrazoPagamentoItens<T>;
+begin
+  Result := Self;
+  FItem := Value;
+end;
+
+function TEntidadePrazoPagamentoItens<T>.Item: Integer;
+begin
+  Result := FItem;
+end;
+
+function TEntidadePrazoPagamentoItens<T>.NumeroPagamento(Value: Integer): iEntidadePrazoPagamentoItens<T>;
+begin
+  Result := Self;
+  NumeroPagamento := Value;
+end;
+
+function TEntidadePrazoPagamentoItens<T>.NumeroPagamento: Integer;
+begin
+  Result := NumeroPagamento;
+end;
+
+function TEntidadePrazoPagamentoItens<T>.QuantidadedeDias(Value: Integer): iEntidadePrazoPagamentoItens<T>;
+begin
+  Result := Self;
+  FQuantidadedeDias := Value;
+end;
+
+function TEntidadePrazoPagamentoItens<T>.QuantidadedeDias: Integer;
+begin
+  Result := QuantidadedeDias;
+end;
+
+function TEntidadePrazoPagamentoItens<T>.&End: T;
+begin
+  Result := FParent;
+end;
+
+end.

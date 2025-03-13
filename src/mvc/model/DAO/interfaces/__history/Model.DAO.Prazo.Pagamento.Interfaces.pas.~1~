@@ -1,0 +1,7 @@
+unit Model.DAO.Prazo.Pagamento.Interfaces;
+
+interface
+
+implementation
+
+end.

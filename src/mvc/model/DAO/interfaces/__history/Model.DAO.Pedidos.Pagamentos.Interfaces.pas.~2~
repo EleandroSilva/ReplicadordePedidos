@@ -1,0 +1,21 @@
+{*******************************************************}
+{                    API PDV - JSON                     }
+{                      Be More Web                      }
+{          Início do projeto 22/02/2025 08:44           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.DAO.Pedidos.Pagamentos.Interfaces;
+
+interface
+
+type
+  iDAOPedidosPagamentos = interface
+    ['{E45B9E5E-3561-4B9C-9697-FCED00C4A0CE}']
+  end;
+
+implementation
+
+end.

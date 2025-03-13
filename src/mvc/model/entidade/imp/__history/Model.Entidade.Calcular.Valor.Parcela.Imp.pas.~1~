@@ -1,0 +1,7 @@
+unit Model.Entidade.Calcular.Valor.Parcela.Imp;
+
+interface
+
+implementation
+
+end.

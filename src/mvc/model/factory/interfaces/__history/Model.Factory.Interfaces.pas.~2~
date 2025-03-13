@@ -1,0 +1,13 @@
+unit Model.Factory.Interfaces;
+
+interface
+
+type
+  iFactory = interface
+    ['{D4B77362-B351-4C89-A8E4-0A5B57CB0AFF}']
+  end;
+
+
+implementation
+
+end.

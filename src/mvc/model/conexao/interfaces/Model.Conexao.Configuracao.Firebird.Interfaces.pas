@@ -1,0 +1,29 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 23/02/2025 16:41           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.Conexao.Configuracao.Firebird.Interfaces;
+
+interface
+
+type
+  iConfiguracaoFirebird = interface
+    ['{AF6F78F6-1652-4AD5-A718-3046E5CA4CE3}']
+    function DriverID     : String;
+    function Database     : String;
+    function UserName     : String;
+    function Password     : String;
+    function Server       : String;
+    function Port         : String;
+    function VendorLib    : String;
+    function NomeServidor : String;
+    function Servidor     : String;
+  end;
+
+implementation
+
+end.

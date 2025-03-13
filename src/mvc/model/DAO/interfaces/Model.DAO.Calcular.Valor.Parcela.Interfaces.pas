@@ -1,0 +1,28 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 26/02/2025 17:02           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.DAO.Calcular.Valor.Parcela.Interfaces;
+
+interface
+
+uses
+  Data.DB, Model.Entidade.Calcular.Valor.Parcela.Interfaces;
+
+type
+  iDAOCalcularValorParcela = interface
+    ['{A92AD862-2DBC-4DA2-A60E-80D68F4933B2}']
+    function DataSet    (DataSource : TDataSource) : iDAOCalcularValorParcela; overload;
+    function DataSet                               : TDataSet;                 overload;
+    function CalcularValorParcela                  : iDAOCalcularValorParcela;
+
+    function This : iEntidadeCalcularValorParcela<iDAOCalcularValorParcela>;
+  end;
+
+implementation
+
+end.

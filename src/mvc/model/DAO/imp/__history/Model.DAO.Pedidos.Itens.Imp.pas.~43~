@@ -1,0 +1,521 @@
+unit Model.DAO.Pedidos.Itens.Imp;
+
+interface
+
+uses
+ Data.DB,
+ Winapi.Windows,
+ Vcl.Dialogs,
+ System.SysUtils,
+
+ Model.DAO.Pedidos.Itens.Interfaces,
+ Model.Entidade.Pedidos.Itens.Interfaces,
+ Model.Conexao.Firedac.Interfaces,
+ Model.Conexao.Query.Interfaces,
+ Uteis.Interfaces;
+
+type
+  TDAOPedidosItens = class(TInterfacedObject, iDAOPedidosItens)
+    private
+      FPedidosItens  : iEntidadePedidosItens<iDAOPedidosItens>;
+      FConexao       : iConexao;
+      FDataSet       : TDataSet;
+      FQuery         : iQuery;
+      FUteis         : iUteis;
+      FIdPedidoAtual : Integer;
+
+      function LoopRegistro(Value : Integer): Integer;
+      function GenIdAtual: Integer;
+      const
+      FSQL=('select '+
+            'ip.cod_ped       as idpedido, '+
+            'ip.ITEM          as item, '+
+            'ip.ID_PRO        as idproduto, '+
+            'pro.descricao    as nomeproduto, '+
+            'ip.ID_TAM        as idtamanho, '+
+            '(tam.comp||''X''||tam.larg) as medida, '+
+            'ip.COD_PRO       as codigoproduto, '+
+            'ip.COD_BARRA     as codigobarra, '+
+            'ip.COD_COR       as codigocor, '+
+            'ip.COD_ACER      as codigoacessorio, '+
+            'ip.NUM_PED       as numeropedido, '+
+            'ip.COD_TAM       as codigotamanho, '+
+            'ip.EAN_13        as ean13, '+
+            'ip.EAN_23        as ean23, '+
+            'ip.CFOP          as cfop, '+
+            'ip.CST           as cst, '+
+            'ip.CF            as cf, '+
+            'ip.PERC_COM      as aliquotacomissao, '+
+            'ip.ICMS          as aliquotaicms, '+
+            'ip.PERC_IPI      as aliquotaipi, '+
+            'ip.VINC_ICMS     as aliquotavincicms, '+
+            'ip.VINC_ISS      as aliquotavinciss, '+
+            'ip.PERC_DESC     as aliquotadesconto, '+
+            'ip.PERC_PED      as aliquotadescontopedido, '+
+            'ip.PRECOTABELA   as valortabela, '+
+            'ip.QTDE          as quantidade, '+
+            'ip.CUSTO         as valorcusto, '+
+            'ip.VALOR         as valorproduto, '+
+            'ip.SUB_TOTAL     as subtotalproduto, '+
+            'ip.VL_DESCONTO   as valordescontoproduto, '+
+            'ip.VL_TABELA     as valorportabela, '+
+            'ip.VL_TT_TABELA  as valortotalportabela, '+
+            'ip.VL_FINAL      as valorfinalproduto, '+
+            'ip.LARG          as larguraproduto, '+
+            'ip.COMP          as comprimentoproduto, '+
+            'ip.ESP           as espessuraproduto, '+
+            'ip.PECA          as peca, '+
+            'ip.PESO          as pesoproduto, '+
+            'ip.CUBICO        as cubicoproduto, '+
+            'ip.CANCELADO     as cancelado, '+
+            'ip.ESTOQUE       as saiudoestoque, '+
+            'ip.C_G           as coug, '+
+            'ip.PRODUCAO      as producao, '+
+            'ip.F_PRETO       as fundopreto '+
+            'from cad_item_ped ip '+
+            'inner join cad_pro pro on pro.id_pro = ip.id_pro '+
+            'left  join cad_tam tam on tam.id_tam = ip.id_tam '
+           );
+    public
+      constructor Create;
+      destructor Destroy; override;
+      class function New : iDAOPedidosItens;
+
+      function DataSet    (DataSource : TDataSource) : iDAOPedidosItens; overload;
+      function DataSet                               : TDataSet;    overload;
+      function GetAll                                : iDAOPedidosItens;
+      function GetbyId    (Id : Variant)             : iDAOPedidosItens;
+      function GetbyParams                           : iDAOPedidosItens; overload;
+      function GetbyParams(IdProduto : Variant)      : iDAOPedidosItens; overload;
+      function Post                                  : iDAOPedidosItens;
+      function Put                                   : iDAOPedidosItens; overload;
+      function Put(Id : Variant)                     : iDAOPedidosItens; overload;
+      function Delete                                : iDAOPedidosItens;
+
+      function QuantidadeRegistro : Integer;
+      function This : iEntidadePedidosItens<iDAOPedidosItens>;
+  end;
+
+implementation
+
+uses
+  Model.Entidade.Pedidos.Itens.Imp,
+  Model.Conexao.Firedac.Firebird.Imp,
+  Model.Conexao.Query.Imp,
+  Uteis;
+
+{ TDAOPedidosItens }
+
+constructor TDAOPedidosItens.Create;
+begin
+  FPedidosItens := TEntidadePedidosItens<iDAOPedidosItens>.New(Self);
+  FConexao      := TModelConexaoFiredacFirebird.New;
+  FQuery        := TQuery.New;
+  FUteis        := TUteis.New;
+end;
+
+destructor TDAOPedidosItens.Destroy;
+begin
+  inherited;
+end;
+
+class function TDAOPedidosItens.New: iDAOPedidosItens;
+begin
+  Result := Self.Create;
+end;
+
+function TDAOPedidosItens.DataSet(DataSource: TDataSource): iDAOPedidosItens;
+begin
+  Result := Self;
+  if not Assigned(FDataset) then
+    DataSource.DataSet := FQuery.DataSet
+  else
+    DataSource.DataSet := FDataSet;
+end;
+
+function TDAOPedidosItens.DataSet: TDataSet;
+begin
+  Result := FDataSet;
+end;
+
+function TDAOPedidosItens.GetAll: iDAOPedidosItens;
+begin
+  Result := Self;
+  try
+    FDataSet := FQuery
+                  .SQL(FSQL)
+                  .Open
+                  .DataSet;
+
+  if not FDataSet.IsEmpty then
+  begin
+    FPedidosItens.IdPedido(FDataSet.FieldByName('id').AsString);
+    QuantidadeRegistro;
+  end
+  else
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      FPedidosItens.IdPedido('0');
+      Abort;
+    end;
+  end;
+end;
+
+function TDAOPedidosItens.GetbyId(Id: Variant): iDAOPedidosItens;
+begin
+  Result := Self;
+  try
+    FDataSet := FQuery
+                  .SQL(FSQL)
+                    .Add('where ip.cod_ped=:Idpedido')
+                    .Params('Idpedido', Id)
+                  .Open
+                  .DataSet;
+  if not FDataSet.IsEmpty then
+    FPedidosItens.IdPedido(FDataSet.FieldByName('idpedido').AsString)
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      FPedidosItens.IdPedido('0');
+      Abort;
+    end;
+  end;
+
+end;
+
+function TDAOPedidosItens.GetbyParams: iDAOPedidosItens;
+begin
+  Result := Self;
+  try
+    FDataSet := FQuery
+                  .SQL(FSQL)
+                    .Add('where pp.cpfcnpj=:cpfcnpj')
+                    .Add('and p.excluido=:excluido')
+                  .Open
+                  .DataSet;
+  if not FDataSet.IsEmpty then
+  begin
+    FPedidosItens.IdPedido(FDataSet.FieldByName('id').AsString);
+    QuantidadeRegistro;
+  end;
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      ShowMessage('Erro no TDAOPedidosItens.GetbyParams - ao tentar encontrar pedido por cpfcnpj: ' + E.Message);
+      Abort;
+    end;
+  end;
+    FPedidosItens.IdPedido('0');
+end;
+
+function TDAOPedidosItens.GetbyParams(IdProduto: Variant): iDAOPedidosItens;
+begin
+  Result := Self;
+  try
+    FDataSet := FQuery
+                  .SQL(FSQL)
+                    .Add('where ip.cod_barra=:idproduto')
+                  .Open
+                  .DataSet;
+  if not FDataSet.IsEmpty then
+  begin
+    FPedidosItens.IdPedido(FDataSet.FieldByName('idproduto').AsString);
+    QuantidadeRegistro;
+  end;
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      FPedidosItens.IdPedido('0');
+      ShowMessage('Erro no TDAOPedidosItens.GetbyParams - ao tentar encontrar pedido por idusuario: ' + E.Message);
+      Abort;
+    end;
+  end;
+
+end;
+
+function TDAOPedidosItens.Post: iDAOPedidosItens;
+const
+  LSQL=('insert into cad_item_ped( '+
+                             'cod_ped, ' +
+                             'ITEM, ' +
+                             'ID_PRO, ' +
+                             'ID_TAM, ' +
+                             'COD_PRO, ' +
+                             'COD_BARRA, ' +
+                             'COD_COR, ' +
+                             'COD_ACER, ' +
+                             'NUM_PED, ' +
+                             'COD_TAM, ' +
+                             'EAN_13, ' +
+                             'EAN_23, ' +
+                             'CFOP, ' +
+                             'CST, ' +
+                             'CF, ' +
+                             'PERC_COM, ' +
+                             'ICMS, ' +
+                             'PERC_IPI, ' +
+                             'VINC_ICMS, ' +
+                             'VINC_ISS, ' +
+                             'PERC_DESC, ' +
+                             'PERC_PED, ' +
+                             'PRECOTABELA, ' +
+                             'QTDE, ' +
+                             'CUSTO, ' +
+                             'VALOR, ' +
+                             'SUB_TOTAL, ' +
+                             'VL_DESCONTO, ' +
+                             'VL_TABELA, ' +
+                             'VL_TT_TABELA, ' +
+                             'VL_FINAL, ' +
+                             'LARG, ' +
+                             'COMP, ' +
+                             'ESP, ' +
+                             'PECA, ' +
+                             'PESO, ' +
+                             'CUBICO, ' +
+                             'CANCELADO, ' +
+                             'ESTOQUE, ' +
+                             'C_G, ' +
+                             'PRODUCAO, ' +
+                             'F_PRETO ' +
+                           ')'+
+                             ' values '+
+                           '('+
+                             ':IdPedido, '+
+                             ':Item, '+
+                             ':IdProduto, '+
+                             ':IdTamanho, '+
+                             ':CodigoProduto, '+
+                             ':CodigoBarra, '+
+                             ':CodigoCor, '+
+                             ':CodigoAcessorio, '+
+                             ':NumeroPedido, '+
+                             ':CodigoTamanho, '+
+                             ':Ean13, '+
+                             ':Ean23, '+
+                             ':CFOP, '+
+                             ':CST, '+
+                             ':CF, '+
+                             ':AliquotaComissao, '+
+                             ':AliquotaICMS, '+
+                             ':AliquotaIPI, '+
+                             ':AliquotaVincICMS, '+
+                             ':AliquotaVincISS, '+
+                             ':AliquotaDesconto, '+
+                             ':AliquotaDescontoPedido, '+
+                             ':ValorTabela, '+
+                             ':Quantidade, '+
+                             ':ValorCusto, '+
+                             ':ValorProduto, '+
+                             ':SubTotalProduto, '+
+                             ':ValorDescontoProduto, '+
+                             ':ValorPorTabela, '+
+                             ':ValorTotalPorTabela, '+
+                             ':ValorFinalProduto, '+
+                             ':LarguraProduto, '+
+                             ':ComprimentoProduto, '+
+                             ':EspessuraProduto, '+
+                             ':Peca, '+
+                             ':PesoProduto, '+
+                             ':CubicoProduto, '+
+                             ':Cancelado, '+
+                             ':SaiudoEstoque, '+
+                             ':CouG, '+
+                             ':Producao, '+
+                             ':FundoPreto '+
+                            ')'
+       );
+begin
+  Result := Self;
+  GenIdAtual;
+  FConexao.StartTransaction;
+  try
+    FQuery
+      .SQL(LSQL)
+      .Params('idpedido'               , FPedidosItens.IdPedido)
+      .Params('item'                   , FPedidosItens.Item)
+      .Params('idproduto'              , FPedidositens.IdProduto)
+      .Params('idtamanho'              , FPedidositens.IdTamanho)
+      .Params('codigoproduto'          , FPedidositens.CodigoProduto)
+      .Params('CodigoBarra'            , FPedidosItens.CodigoBarra)
+      .Params('CodigoCor'              , FPedidosItens.CodigoCor)
+      .Params('CodigoAcessorio'        , FPedidosItens.CodigoAcessorio)
+      .Params('NumeroPedido'           , FPedidosItens.NumeroPedido)
+      .Params('CodigoTamanho'          , FPedidosItens.CodigoTamanho)
+      .Params('Ean13'                  , FPedidosItens.Ean13)
+      .Params('Ean23'                  , FPedidosItens.Ean23)
+      .Params('CFOP'                   , FPedidosItens.CFOP)
+      .Params('CST'                    , FPedidosItens.CST)
+      .Params('CF'                     , FPedidosItens.CF)
+      .Params('AliquotaComissao'       , FPedidosItens.AliquotaComissao)
+      .Params('AliquotaICMS'           , FPedidosItens.AliquotaICMS)
+      .Params('AliquotaIPI'            , FPedidosItens.AliquotaIPI)
+      .Params('AliquotaVincICMS'       , FPedidosItens.AliquotaVincICMS)
+      .Params('AliquotaVincISS'        , FPedidosItens.AliquotaVincISS)
+      .Params('AliquotaDesconto'       , FPedidosItens.AliquotaDesconto)
+      .Params('AliquotaDescontoPedido' , FPedidosItens.AliquotaDescontoPedido)
+      .Params('ValorTabela'            , FPedidosItens.ValorTabela)
+      .Params('Quantidade'             , FPedidosItens.Quantidade)
+      .Params('ValorCusto'             , FPedidosItens.ValorCusto)
+      .Params('ValorProduto'           , FPedidosItens.ValorProduto)
+      .Params('SubTotalProduto'        , FPedidosItens.SubTotalProduto)
+      .Params('ValorDescontoProduto'   , FPedidosItens.ValorDescontoProduto)
+      .Params('ValorPorTabela'         , FPedidosItens.ValorPorTabela)
+      .Params('ValorTotalPorTabela'    , FPedidosItens.ValorTotalPorTabela)
+      .Params('ValorFinalProduto'      , FPedidosItens.ValorFinalProduto)
+      .Params('LarguraProduto'         , FPedidosItens.LarguraProduto)
+      .Params('ComprimentoProduto'     , FPedidosItens.ComprimentoProduto)
+      .Params('EspessuraProduto'       , FPedidosItens.EspessuraProduto)
+      .Params('Peca'                   , FPedidosItens.Peca)
+      .Params('PesoProduto'            , FPedidosItens.PesoProduto)
+      .Params('CubicoProduto'          , FPedidosItens.CubicoProduto)
+      .Params('Cancelado'              , FPedidosItens.Cancelado)
+      .Params('SaiudoEstoque'          , FPedidosItens.SaiudoEstoque)
+      .Params('CouG'                   , FPedidosItens.CouG)
+      .Params('Producao'               , FPedidosItens.Producao)
+      .Params('FundoPreto'             , FPedidosItens.FundoPreto)
+      .ExecSQL;
+
+      FConexao.Commit;
+      //ShowMessage('Registro pedido itens replicado com ID: ' + FPedidosItens.IdPedido);
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      ShowMessage('Erro ao replicar pedido itens: ' + E.Message);
+      Abort;
+    end;
+  end;
+end;
+
+
+//Put para atualizar valor pedido
+function TDAOPedidosItens.Put(Id: Variant): iDAOPedidosItens;
+const
+  lSQL=('update pedido set '+
+                       'valorproduto     =:valorproduto, '+
+                       'valordescontoitem=:valordescontoitem, '+
+                       'valorreceber     =:valorreceber '+
+                       'where      id    =:id '
+       );
+begin
+  Result := Self;
+  FConexao.StartTransaction;
+  try
+    FQuery
+      .SQL(lSQL)
+        .Params('id' , Id)
+
+      .ExecSQL;
+
+    FConexao.Commit;
+    ShowMessage('Registro alterado com sucesso!');
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      ShowMessage('Erro no TDAOPedidosItens.Put - ao tentar alterar apenas valores do pedido: ' + E.Message);
+      Abort;
+    end;
+  end;
+end;
+
+function TDAOPedidosItens.Put: iDAOPedidosItens;
+const
+  LSQL=('update pedido set '+
+                       'idempresa          =:idempresa, '+
+                       'idcaixa            =:idcaixa, '+
+                       'idpessoa           =:idpessoa, '+
+                       'idcondicaopagamento=:idcondicaopagamento, '+
+                       'idusuario          =:idusuario, '+
+                       'valorproduto       =:valorproduto, '+
+                       'valordesconto      =:valordesconto, '+
+                       'valorreceber       =:valorreceber, '+
+                       'valordescontoitem  =:valordescontoitem, '+
+                       'datahoraemissao    =:datahoraemissao, '+
+                       'status             =:status, '+
+                       'excluido           =:excluido '+
+                       'where id           =:id '
+       );
+begin
+  Result := Self;
+  FConexao.StartTransaction;
+  try
+    FQuery
+      .SQL(LSQL)
+        .Params('idpedido' , FPedidosItens.IdPedido)
+      .ExecSQL;
+    FConexao.Commit;
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      ShowMessage('Erro no TDAOPedidosItens.Put - ao tentar alterar pedido: ' + E.Message);
+      Abort;
+    end;
+  end;
+end;
+
+
+function TDAOPedidosItens.Delete: iDAOPedidosItens;
+const
+  LSQL=('delete from pedido');
+begin
+  Result := self;
+  FConexao.StartTransaction;
+  try
+    FQuery.SQL(LSQL)
+               .Add('id=:idpedido')
+                 .Params('idpedido', FPedidosItens.IdPedido)
+               .ExecSQL;
+    FConexao.Commit;
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      ShowMessage('Erro no TDAOPedidosItens.Delete - ao tentar excluír pedido: ' + E.Message);
+      Abort;
+    end;
+  end;
+end;
+
+function TDAOPedidosItens.LoopRegistro(Value: Integer): Integer;
+begin
+  FDataSet.First;
+  try
+    while not FDataSet.Eof do
+    begin
+      Value := Value + 1;
+      FDataSet.Next;
+    end;
+  finally
+    Result := Value;
+  end;
+end;
+
+function TDAOPedidosItens.QuantidadeRegistro: Integer;
+begin
+  Result := LoopRegistro(0);
+end;
+
+function TDAOPedidosItens.GenIdAtual: Integer;
+begin
+  FDataSet := FQuery
+                .SQL('SELECT GEN_ID(ID_CODPED, 0) FROM RDB$DATABASE;')
+                .Open
+                .DataSet;
+  Result      :=FDataSet.FieldByName('gen_id').AsInteger;
+  FPedidosItens.IdPedido(IntToStr(Result));
+end;
+
+function TDAOPedidosItens.This: iEntidadePedidosItens<iDAOPedidosItens>;
+begin
+  Result := FPedidosItens;
+end;
+
+end.

@@ -1,0 +1,12 @@
+unit Model.DAO.Prazo.Pagamento.Interfaces;
+
+interface
+
+type
+  iDAOPrazoPagamento = interface
+    ['{8931DBB4-EF49-4736-BF00-E23C5BD4A6E7}']
+  end;
+
+implementation
+
+end.

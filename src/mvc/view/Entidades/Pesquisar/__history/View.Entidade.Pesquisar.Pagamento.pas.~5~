@@ -1,0 +1,54 @@
+unit View.Entidade.Pesquisar.Pagamento;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Data.DB,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.StdCtrls,
+  Vcl.Buttons,
+  Vcl.DBCtrls,
+  Vcl.ExtCtrls;
+
+type
+  TfrmViewPesquisarPagamento = class(TForm)
+    pPrincipal: TPanel;
+    pFiltro: TPanel;
+    rgEscolhaTipoFiltro: TRadioGroup;
+    pDigitaConformePesquisa: TPanel;
+    Label3: TLabel;
+    edtPesquisa: TEdit;
+    pBotoes: TPanel;
+    lConsultar: TLabel;
+    dbNavegador: TDBNavigator;
+    pRiscoNavegador: TPanel;
+    btnConsultar: TBitBtn;
+    bbSair: TBitBtn;
+    pGrid: TPanel;
+    dbGrid: TDBGrid;
+    pTitulo: TPanel;
+    DataSource: TDataSource;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmViewPesquisarPagamento: TfrmViewPesquisarPagamento;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,23 @@
+unit Uteis.Interfaces;
+
+interface
+
+type
+  iUteis = interface
+    ['{FA49E1BB-F056-4907-AC79-365B5C512A85}']
+    function ValidaCnpjCeiCpf (Numero: String; ExibeMsgErro: Boolean=True): Boolean;
+    function PegarApenasNumero(Value : String): String;
+    function Pesquisar        (Key, Value: string): string;
+    function MaskCNPJ         (Value : String) : String;
+    function MaskCPF          (Value : String) : String;
+    function MaskCep          (Value : String) : String;
+    function MaskDDD          (Value : String) : String;
+    function MaskTelefone     (Value : String) : String;
+
+    procedure LerIniEmpresa(IdEmpresa, NomeEmpresa, NomeUsuario: string);
+    function &End : iUteis;
+  end;
+
+implementation
+
+end.

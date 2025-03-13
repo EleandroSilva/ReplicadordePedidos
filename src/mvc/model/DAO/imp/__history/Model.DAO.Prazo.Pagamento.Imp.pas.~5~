@@ -1,0 +1,60 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 06/03/2025 19:56           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.DAO.Prazo.Pagamento.Imp;
+
+interface
+
+uses
+  Data.DB,
+
+  Model.DAO.Prazo.Pagamento.Interfaces,
+  Model.Entidade.Prazo.Pagamento.Interfaces,
+  Model.Conexao.Firedac.Interfaces,
+  Model.Conexao.Query.Interfaces;
+
+type
+  TDAOPrazoPagamento = class(TInterfacedObject, iDAOPrazoPagamento)
+    private
+      FPrazoPagamento : iEntidadePrazoPagamento<iDAOPrazoPagamento>;
+      FConexao        : iConexao;
+      FDataSet        : TDataSet;
+      FQuery          : iQuery;
+    public
+      constructor Create;
+      destructor Destroy; override;
+      class function New : iDAOPrazoPagamento;
+  end;
+
+implementation
+
+uses
+  Model.Entidade.Prazo.Pagamento.Imp,
+  Model.Conexao.Firedac.Firebird.Imp,
+  Model.Conexao.Query.Imp;
+
+{ TDAOPrazoPagamento }
+
+constructor TDAOPrazoPagamento.Create;
+begin
+  FPrazoPagamento := TEntidadePrazoPagamento<iDAOPrazoPagamento>.New(Self);
+  FConexao := TModelConexaoFiredacFirebird.New;
+  FQuery   := TQuery.New;
+end;
+
+destructor TDAOPrazoPagamento.Destroy;
+begin
+  inherited;
+end;
+
+class function TDAOPrazoPagamento.New: iDAOPrazoPagamento;
+begin
+
+end;
+
+end.

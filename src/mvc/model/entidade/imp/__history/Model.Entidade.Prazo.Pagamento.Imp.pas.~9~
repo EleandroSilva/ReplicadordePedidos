@@ -1,0 +1,49 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 06/03/2025 19:11           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.Entidade.Prazo.Pagamento.Imp;
+
+interface
+
+uses
+  Model.Entidade.Prazo.Pagamento.Interfaces,
+  Model.Entidade.Prazo.Pagamento.Itens.Interfaces;
+
+type
+  TEntidadePrazoPagamento<T : iInterface> = class(TInterfacedObject, iEntidadePrazoPagamento<T>)
+    private
+      [weak]
+      FParent : T;
+      FPrazoPagamentoItens  : iEntidadePrazoPagamentoItens<iEntidadePrazoPagamento<T>>;
+    public
+      constructor Create(Parent : T);
+      destructor Destroy; override;
+      class function New(Parent : T) : iEntidadePrazoPagamento<T>;
+  end;
+
+implementation
+
+{ TEntidadePrazoPagamento<T> }
+
+constructor TEntidadePrazoPagamento<T>.Create(Parent: T);
+begin
+  FParent := Parent;
+  FPrazoPagamentoItens := TEntidadePrazoPagamentoItens<iEntidadePrazoPagamento<T>>.New(Self);
+end;
+
+destructor TEntidadePrazoPagamento<T>.Destroy;
+begin
+  inherited;
+end;
+
+class function TEntidadePrazoPagamento<T>.New(Parent: T): iEntidadePrazoPagamento<T>;
+begin
+  Result := Self.Create(Parent);
+end;
+
+end.

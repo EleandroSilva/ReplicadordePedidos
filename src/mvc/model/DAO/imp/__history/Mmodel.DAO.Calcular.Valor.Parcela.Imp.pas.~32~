@@ -1,0 +1,188 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 26/02/2025 17:02           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Mmodel.DAO.Calcular.Valor.Parcela.Imp;
+
+interface
+
+uses
+  Data.DB,
+  Vcl.Dialogs,
+  System.SysUtils,
+
+  Model.DAO.Calcular.Valor.Parcela.Interfaces,
+  Model.Entidade.Calcular.Valor.Parcela.Interfaces,
+  Model.Conexao.Firedac.Interfaces,
+  Model.Conexao.Query.Interfaces;
+
+type
+  TDAOCalcularValorParcela = class(TInterfacedObject, iDAOCalcularValorParcela)
+    private
+      FCalcularValorParcela : iEntidadeCalcularValorParcela<iDAOCalcularValorParcela>;
+      FConexao        : iConexao;
+      FDataSet        : TDataSet;
+      FQuery          : iQuery;
+
+      const
+        FSQL=('with Parcelas as ( '+
+                  'select distinct '+
+                  '  p.total ValorTotalPedido, '+
+                  '  p.id as IdPedido, '+
+                  '  p.cod_ped as CodigoPedido, '+
+                  '  p.cod_pgto as IdPagamento, '+
+                  '  pp.qtde_pgto as QuantidadePagamento, '+
+                  '  ipp.num_pgto as NumeroPagamento, '+
+                  '  pgto.pg_com as PagouComo, '+
+                  '  ipp.qtde_dias as QuantidadeDeDias, '+
+                  '   current_date + ipp.qtde_dias as DataVencimento, '+
+                  '   coalesce(cast((p.total / pp.qtde_pgto) as numeric(18,3)), 0) as ValorParcela '+
+                  'from cad_prazo pp '+
+                  'inner join cad_ped p          on p.cod_pgto    = pp.cod_prazo '+
+                  'inner join cad_pgto_ped  pgto on pgto.idpedido = p.id '+
+                  'inner join cad_item_prazo ipp on ipp.codigo    = pp.cod_prazo '+
+                  'where pp.cod_prazo = :Id '+
+                  'and p.id= :IdPedido '+
+                 '), SomaParcelas as '+
+                 '( '+
+                 ' select '+
+                 '   p.id as IdPedido, '+
+                 '   p.total as ValorTotalPedido, '+
+                 '   sum(cast((p.total / pp.qtde_pgto) as numeric(18,3))) as SomaParcelas '+
+                 ' from cad_prazo pp '+
+                 ' inner join cad_ped p          on p.cod_pgto = pp.cod_prazo '+
+                 ' inner join cad_item_prazo ipp on ipp.codigo = pp.cod_prazo '+
+                 ' where pp.cod_prazo = :Id '+
+                 ' and p.id = :IdPedido '+
+                 ' group by p.id, p.total '+
+                 ') '+
+                 'select '+
+                 '   parc.ValorTotalPedido, '+
+                 '   parc.IdPedido, '+
+                 '  parc.CodigoPedido, '+
+                 '   parc.IdPagamento, '+
+                 '   parc.QuantidadePagamento, '+
+                 '   parc.NumeroPagamento, '+
+                 '   parc.DataVencimento, '+
+                 '   parc.PagouComo, '+
+                 '   parc.QuantidadeDeDias, '+
+                 '   case when parc.NumeroPagamento = parc.QuantidadePagamento then '+
+                 '           parc.ValorParcela + (sp.ValorTotalPedido - sp.SomaParcelas) '+
+                 '   else parc.ValorParcela '+
+                 '   end as valorparcela '+
+                 'from Parcelas parc '+
+                 'join SomaParcelas sp on parc.IdPedido = sp.IdPedido '
+             );
+
+      FSQLPrazo= ('select distinct '+
+                   'ipp.codigo    as IdPagamento, '+
+                   'ipp.num_pgto  as NumeroPagamento, '+
+                   'ipp.qtde_dias as QuantidadedeDias, '+
+                   'pp.qtde_pgto  as QuantidadedePagamento '+
+                   'from cad_item_prazo ipp '+
+                   'inner join cad_prazo pp on pp.cod_prazo = ipp.codigo ');
+
+     function Somar(QtdeParcelas : Integer) : Currency;
+   public
+     constructor Create;
+     destructor Destroy; override;
+     class function New : iDAOCalcularValorParcela;
+
+     function DataSet    (DataSource : TDataSource) : iDAOCalcularValorParcela; overload;
+     function DataSet                               : TDataSet;                 overload;
+     function CalcularValorParcela                  : iDAOCalcularValorParcela;
+
+     function This : iEntidadeCalcularValorParcela<iDAOCalcularValorParcela>;
+  end;
+
+implementation
+
+uses
+  Model.Entidade.Calcular.Valor.Parcela.Imp,
+  Model.Conexao.Firedac.Firebird.Imp,
+  Model.Conexao.Query.Imp;
+
+{ TDAOCalcularValorParcela }
+
+constructor TDAOCalcularValorParcela.Create;
+begin
+  FCalcularValorParcela := TEntidadeCalcularValorParcela<iDAOCalcularValorParcela>.New(Self);
+  FConexao := TModelConexaoFiredacFirebird.New;
+  FQuery   := TQuery.New;
+end;
+
+destructor TDAOCalcularValorParcela.Destroy;
+begin
+  inherited;
+end;
+
+class function TDAOCalcularValorParcela.New: iDAOCalcularValorParcela;
+begin
+  Result := Self.Create;
+end;
+
+
+function TDAOCalcularValorParcela.DataSet(DataSource: TDataSource): iDAOCalcularValorParcela;
+begin
+  Result := Self;
+  if not Assigned(FDataset) then
+    DataSource.DataSet := FQuery.DataSet
+  else
+    DataSource.DataSet := FDataSet;
+end;
+
+function TDAOCalcularValorParcela.DataSet: TDataSet;
+begin
+  Result := FDataSet;
+end;
+
+function TDAOCalcularValorParcela.Somar(QtdeParcelas : Integer) : Currency;
+begin
+  Result := 0;
+  Result := FCalcularValorParcela.ValorTotalPedido - FCalcularValorParcela.ValorParcela * QtdeParcelas;
+  if Result < 0 then
+    FCalcularValorParcela.ValorParcela(FCalcularValorParcela.ValorParcela + Result)
+  else
+  if Result < 0 then
+    FCalcularValorParcela.ValorParcela(FCalcularValorParcela.ValorParcela - Result);
+end;
+
+function TDAOCalcularValorParcela.CalcularValorParcela: iDAOCalcularValorParcela;
+begin
+  Result := Self;
+  try
+    FDataSet := FQuery
+                   .SQL(FSQLPrazo)
+                     .Add('where ipp.codigo=:IdPagamento')
+                     .Params('IdPagamento', FCalcularValorParcela.PrazoPagamentoItens.Id)
+                   .Open
+                   .DataSet;
+  if not FDataSet.IsEmpty then
+  begin
+    FCalcularValorParcela
+                .ValorParcela(StrToFloat(FormatFloat('0.00',
+                         FCalcularValorParcela.ValorTotalPedido / FDataSet.FieldByName('QuantidadedePagamento').AsInteger)));
+    if FCalcularValorParcela.PrazoPagamentoItens.NumeroPagamento = 1 then
+      Somar(FDataSet.FieldByName('QuantidadedePagamento').AsInteger);
+    end
+    else
+    ShowMessage('Registro não encontrado, para calcular valor das parcelas!');
+  except
+    on E: Exception do
+    begin
+      FCalcularValorParcela.ValorParcela(0);
+      Abort;
+    end;
+  end;
+end;
+
+function TDAOCalcularValorParcela.This: iEntidadeCalcularValorParcela<iDAOCalcularValorParcela>;
+begin
+  Result := FCalcularValorParcela;
+end;
+
+end.

@@ -1,0 +1,168 @@
+{*******************************************************}
+{                    API PDV - JSON                     }
+{                      Be More Web                      }
+{          Início do projeto 06/03/2025 14:22           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.DAO.Pessoa.Imp;
+
+interface
+
+uses
+  Data.DB,
+
+  Model.DAO.Pessoa.Interfaces,
+  Model.Conexao.Firedac.Interfaces,
+  Model.Conexao.Query.Interfaces,
+  Uteis.Interfaces,
+  Model.Entidade.Pessoa.Interfaces;
+
+type
+  TDAOPessoa = class(TInterfacedObject, iDAOPessoa)
+    private
+      FPessoa  : iEntidadePessoa<iDAOPessoa>;
+      FConexao : iConexao;
+      FDataSet : TDataSet;
+      FQuery   : iQuery;
+      FUteis   : iUteis;
+
+      const
+      FSQL=('select '+
+            'p.id           as Id, '+
+            'p.razao_social as NomePessoa, '+
+            '  case p.f_j when ''J'' then p.cnpj else p.cpf '+
+            'end            CNPJCPF '+
+            'from cad_cli p '
+           );
+      function OrderBy : String;
+    public
+      constructor Create;
+      destructor Destroy; override;
+      class function New : iDAOPessoa;
+
+      function DataSet    (DataSource : TDataSource) : iDAOPessoa; overload;
+      function DataSet                               : TDataSet;   overload;
+      function GetAll                                : iDAOPessoa;
+      function GetbyId    (Id : Variant)             : iDAOPessoa;
+      function GetbyParams                           : iDAOPessoa; overload;
+      function GetbyParams(NomePessoa : String)      : iDAOPessoa; overload;
+
+      function This : iDAOPessoa;
+  end;
+
+implementation
+
+uses
+  Model.Conexao.Firedac.Firebird.Imp,
+  Model.Conexao.Query.Imp,
+  Uteis,
+  Model.Entidade.Pessoa.Imp, Vcl.Dialogs, System.SysUtils;
+
+{ TDAOPessoa }
+
+constructor TDAOPessoa.Create;
+begin
+  FPessoa  := TEntidadePessoa<iDAOPessoa>.New(Self);
+  FConexao := TModelConexaoFiredacFirebird.New;
+  FQuery   := TQuery.New;
+  FUteis   := TUteis.New;
+end;
+
+destructor TDAOPessoa.Destroy;
+begin
+  inherited;
+end;
+
+class function TDAOPessoa.New: iDAOPessoa;
+begin
+  Result := Self.Create;
+end;
+
+function TDAOPessoa.DataSet(DataSource: TDataSource): iDAOPessoa;
+begin
+  Result := Self;
+  if not Assigned(FDataset) then
+    DataSource.DataSet := FQuery.DataSet
+  else
+    DataSource.DataSet := FDataSet;
+end;
+
+function TDAOPessoa.DataSet: TDataSet;
+begin
+  Result := FDataSet;
+end;
+
+
+function TDAOPessoa.GetAll: iDAOPessoa;
+begin
+  Result := Self;
+  try
+    FDataSet := FQuery
+                  .SQL(FSQL)
+                  .Add(OrderBy)
+                  .Open
+                  .DataSet;
+
+  if not FDataSet.IsEmpty then
+  begin
+    FPessoa.Id(FDataSet.FieldByName('id').AsInteger);
+  end
+  else
+    ShowMessage('Registro não encontrado!');
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      FPessoa.Id(0);
+      Abort;
+    end;
+  end;
+end;
+
+function TDAOPessoa.GetbyId(Id: Variant): iDAOPessoa;
+begin
+  Result := Self;
+  try
+    FDataSet := FQuery
+                  .SQL(FSQL)
+                    .Add('where p.Id=:Id')
+                    .Params('Id', Id)
+                  .Open
+                  .DataSet;
+  if not FDataSet.IsEmpty then
+    FPessoa.Id(FDataSet.FieldByName('id').AsInteger)
+  else
+    ShowMessage('Registro não encontrado!');
+  except
+    on E: Exception do
+    begin
+      FPessoa.Id(0);
+      Abort;
+    end;
+  end;
+end;
+
+function TDAOPessoa.GetbyParams: iDAOPessoa;
+begin
+
+end;
+
+function TDAOPessoa.GetbyParams(NomePessoa: String): iDAOPessoa;
+begin
+
+end;
+
+function TDAOPessoa.OrderBy: String;
+begin
+  Result := 'p.Razao_Social';
+end;
+
+function TDAOPessoa.This: iDAOPessoa;
+begin
+  Result := Self;
+end;
+
+end.

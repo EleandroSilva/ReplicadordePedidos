@@ -1,0 +1,24 @@
+unit Model.DAO.Pessoa.Interfaces;
+
+interface
+
+uses
+  Data.DB;
+
+type
+  iDAOPessoa = interface
+    ['{59AA353A-F11D-4C30-BA06-2D54660360A0}']
+    function DataSet    (DataSource : TDataSource) : iDAOPessoa; overload;
+    function DataSet                               : TDataSet;    overload;
+    function GetAll                                : iDAOPessoa;
+    function GetbyId    (Id : Variant)             : iDAOPessoa;
+    function GetbyParams                           : iDAOPessoa; overload;
+    function GetbyParams(NomePessoa : String)      : iDAOPessoa; overload;
+
+    function This : iDAOPessoa;
+  end;
+
+
+implementation
+
+end.

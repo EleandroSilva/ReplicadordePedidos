@@ -1,0 +1,7 @@
+unit Model.Entidade.Prazo.Pagamentos.Imp;
+
+interface
+
+implementation
+
+end.

@@ -1,0 +1,47 @@
+unit Controller.Imp;
+
+interface
+
+uses
+  Controller.Interfaces,
+  Model.Factory.DAO.Interfaces;
+
+type
+  TConroller = class(TInterfacedObject, iController)
+    private
+      FFactoryDAO : iFactoryDAO;
+    public
+      constructor Create;
+      destructor Destroy; override;
+      class function New : iController;
+
+      function FactoryDAO : iFactoryDAO;
+  end;
+
+implementation
+
+{ TConroller }
+
+constructor TConroller.Create;
+begin
+  //
+end;
+
+destructor TConroller.Destroy;
+begin
+  inherited;
+end;
+
+class function TConroller.New: iController;
+begin
+  Result := Self.Create;
+end;
+
+function TConroller.FactoryDAO: iFactoryDAO;
+begin
+
+end;
+
+
+
+end.
