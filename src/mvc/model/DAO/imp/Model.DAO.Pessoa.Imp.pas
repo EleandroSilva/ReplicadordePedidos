@@ -34,10 +34,21 @@ type
       FSQL=('select '+
             'p.id           as Id, '+
             'p.razao_social as NomePessoa, '+
-            '  case p.f_j when ''J'' then p.cnpj else p.cpf '+
-            'end            CNPJCPF, '+
-            'p.cod_rep     as IdRepresentante '+
-            'from cad_cli p '
+            'p.fantasia     as NomeFantasia, '+
+            'p.cep, '+
+            'p.endereco     as Endereco, '+
+            'p.nro          as Numero, '+
+            'p.bairro, '+
+            'p.cidade       as Municipio, '+
+            'p.uf           as Estado, '+
+            'case p.f_j when ''J'' then p.cnpj else p.cpf '+
+            'end            as CNPJCPF, '+
+            'case p.f_j when ''J'' then p.ie else p.rg '+
+            'end as IERG, '+
+            'p.cod_rep     as IdRepresentante, '+
+            'p.fone        as Telefone, '+
+            'p.celular '+
+          'from cad_cli p '
            );
       function OrderBy : String;
     public
@@ -52,7 +63,7 @@ type
       function GetbyParams                           : iDAOPessoa; overload;
       function GetbyParams(NomePessoa : String)      : iDAOPessoa; overload;
 
-      function This : iDAOPessoa;
+      function This : iEntidadePessoa<iDAOPessoa>;
   end;
 
 implementation
@@ -204,9 +215,9 @@ begin
   Result := 'order by p.Razao_Social';
 end;
 
-function TDAOPessoa.This: iDAOPessoa;
+function TDAOPessoa.This : iEntidadePessoa<iDAOPessoa>;
 begin
-  Result := Self;
+  Result := FPessoa;
 end;
 
 end.

@@ -13,14 +13,35 @@ interface
 type
   iEntidadePessoa<T> = interface
     ['{2AB3B5F6-5C97-4F14-AD38-76D480390DE7}']
-    function Id        (Value : Integer)     : iEntidadePessoa<T>; overload;
-    function Id                              : Integer;            overload;
-    function NomePessoa(Value : String)      : iEntidadePessoa<T>; overload;
-    function NomePessoa                      : String;             overload;
-    function CNPJCPF   (Value : String)      : iEntidadePessoa<T>; overload;
-    function CNPJCPF                         : String;             overload;
-    function IdRepresentante(Value : String) : iEntidadePessoa<T>; overload;
-    function IdRepresentante                 : String;             overload;
+    function Id             (Value : Integer)     : iEntidadePessoa<T>; overload;
+    function Id                                   : Integer;            overload;
+    function NomePessoa     (Value : String)      : iEntidadePessoa<T>; overload;
+    function NomePessoa                           : String;             overload;
+    function NomeFantasia   (Value : String)      : iEntidadePessoa<T>; overload;
+    function NomeFantasia                         : String;             overload;
+    function CEP            (Value : String)      : iEntidadePessoa<T>; overload;
+    function CEP                                  : String;             overload;
+    function Endereco       (Value : String)      : iEntidadePessoa<T>; overload;
+    function Endereco                             : String;             overload;
+    function Numero         (Value : String)      : iEntidadePessoa<T>; overload;
+    function Numero                               : String;             overload;
+    function Bairro         (Value : String)      : iEntidadePessoa<T>; overload;
+    function Bairro                               : String;             overload;
+    function Municipio      (Value : String)      : iEntidadePessoa<T>; overload;
+    function Municipio                            : String;             overload;
+    function Estado         (Value : String)      : iEntidadePessoa<T>; overload;
+    function Estado                               : String;             overload;
+    function CNPJCPF        (Value : String)      : iEntidadePessoa<T>; overload;
+    function CNPJCPF                              : String;             overload;
+    function IERG           (Value : String)      : iEntidadePessoa<T>; overload;
+    function IERG                                 : String;             overload;
+    function IdRepresentante(Value : String)      : iEntidadePessoa<T>; overload;
+    function IdRepresentante                      : String;             overload;
+    function Telefone       (Value : String)      : iEntidadePessoa<T>; overload;
+    function Telefone                             : String;             overload;
+    function Celular        (Value : String)      : iEntidadePessoa<T>; overload;
+    function Celular                              : String;             overload;
+
     function &End : T;
   end;
 

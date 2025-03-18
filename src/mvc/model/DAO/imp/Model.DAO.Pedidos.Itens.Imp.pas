@@ -30,7 +30,6 @@ type
       FDataSet       : TDataSet;
       FQuery         : iQuery;
       FUteis         : iUteis;
-      FIdPedidoAtual : Integer;
 
       function LoopRegistro(Value : Integer): Integer;
       const
@@ -517,6 +516,7 @@ end;
 
 function TDAOPedidosItens.GenIdAtual: Integer;
 begin
+  Result := 0;
   FDataSet := FQuery
                 .SQL('SELECT GEN_ID(ID_CODPED, 0) FROM RDB$DATABASE;')
                 .Open

@@ -11,7 +11,8 @@ unit Model.DAO.Pessoa.Interfaces;
 interface
 
 uses
-  Data.DB;
+  Data.DB,
+  Model.Entidade.Pessoa.Interfaces;
 
 type
   iDAOPessoa = interface
@@ -23,7 +24,7 @@ type
     function GetbyParams                           : iDAOPessoa; overload;
     function GetbyParams(NomePessoa : String)      : iDAOPessoa; overload;
 
-    function This : iDAOPessoa;
+    function This : iEntidadePessoa<iDAOPessoa>;
   end;
 
 

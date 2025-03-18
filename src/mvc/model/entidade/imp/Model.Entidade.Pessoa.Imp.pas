@@ -20,23 +20,53 @@ type
     private
       [weak]
       FParent     : T;
-      FId         : Integer;
-      FNomePessoa : String;
-      FCNPJCPF    : String;
+      FId              : Integer;
+      FNomePessoa      : String;
+      FNomeFantasia    : String;
+      FCEP             : String;
+      FEndereco        : String;
+      FNumero          : String;
+      FBairro          : String;
+      FMunicipio       : String;
+      FEstado          : String;
+      FCNPJCPF         : String;
+      FIERG            : String;
       FIdRepresentante : String;
+      FTelefone        : String;
+      FCelular         : String;
     public
       constructor Create(Parent : T);
       destructor Destroy; override;
       class function New(Parent : T) : iEntidadePessoa<T>;
 
-      function Id        (Value : Integer) : iEntidadePessoa<T>; overload;
-      function Id                          : Integer;            overload;
-      function NomePessoa(Value : String)  : iEntidadePessoa<T>; overload;
-      function NomePessoa                  : String;             overload;
-      function CNPJCPF   (Value : String)  : iEntidadePessoa<T>; overload;
-      function CNPJCPF                     : String;             overload;
-      function IdRepresentante(Value : String) : iEntidadePessoa<T>; overload;
-      function IdRepresentante                 : String;             overload;
+      function Id             (Value : Integer)     : iEntidadePessoa<T>; overload;
+      function Id                                   : Integer;            overload;
+      function NomePessoa     (Value : String)      : iEntidadePessoa<T>; overload;
+      function NomePessoa                           : String;             overload;
+      function NomeFantasia   (Value : String)      : iEntidadePessoa<T>; overload;
+      function NomeFantasia                         : String;             overload;
+      function CEP            (Value : String)      : iEntidadePessoa<T>; overload;
+      function CEP                                  : String;             overload;
+      function Endereco       (Value : String)      : iEntidadePessoa<T>; overload;
+      function Endereco                             : String;             overload;
+      function Numero         (Value : String)      : iEntidadePessoa<T>; overload;
+      function Numero                               : String;             overload;
+      function Bairro         (Value : String)      : iEntidadePessoa<T>; overload;
+      function Bairro                               : String;             overload;
+      function Municipio      (Value : String)      : iEntidadePessoa<T>; overload;
+      function Municipio                            : String;             overload;
+      function Estado         (Value : String)      : iEntidadePessoa<T>; overload;
+      function Estado                               : String;             overload;
+      function CNPJCPF        (Value : String)      : iEntidadePessoa<T>; overload;
+      function CNPJCPF                              : String;             overload;
+      function IERG           (Value : String)      : iEntidadePessoa<T>; overload;
+      function IERG                                 : String;             overload;
+      function IdRepresentante(Value : String)      : iEntidadePessoa<T>; overload;
+      function IdRepresentante                      : String;             overload;
+      function Telefone       (Value : String)      : iEntidadePessoa<T>; overload;
+      function Telefone                             : String;             overload;
+      function Celular        (Value : String)      : iEntidadePessoa<T>; overload;
+      function Celular                              : String;             overload;
 
       function &End : T;
   end;
@@ -82,6 +112,83 @@ begin
   Result := FNomePessoa;
 end;
 
+function TEntidadePessoa<T>.NomeFantasia(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FNomeFantasia := Value;
+end;
+
+function TEntidadePessoa<T>.NomeFantasia: String;
+begin
+  Result := FNomeFantasia;
+end;
+
+function TEntidadePessoa<T>.CEP(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FCep := Value;
+end;
+
+function TEntidadePessoa<T>.CEP: String;
+begin
+  Result := FCep;
+end;
+
+function TEntidadePessoa<T>.Endereco(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FEndereco := Value;
+end;
+
+function TEntidadePessoa<T>.Endereco: String;
+begin
+  Result := FEndereco;
+end;
+
+function TEntidadePessoa<T>.Numero(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FNumero := Value;
+end;
+
+function TEntidadePessoa<T>.Numero: String;
+begin
+  Result := FNumero;
+end;
+
+function TEntidadePessoa<T>.Bairro(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FBairro := Value;
+end;
+
+function TEntidadePessoa<T>.Bairro: String;
+begin
+  Result := FBairro;
+end;
+
+function TEntidadePessoa<T>.Municipio(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FMunicipio := Value;
+end;
+
+function TEntidadePessoa<T>.Municipio: String;
+begin
+  Result := FMunicipio;
+end;
+
+function TEntidadePessoa<T>.Estado(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FEstado := Value;
+end;
+
+function TEntidadePessoa<T>.Estado: String;
+begin
+  Result := FEstado;
+end;
+
 function TEntidadePessoa<T>.CNPJCPF(Value: String): iEntidadePessoa<T>;
 begin
   Result := Self;
@@ -91,6 +198,39 @@ end;
 function TEntidadePessoa<T>.CNPJCPF: String;
 begin
   Result := FCNPJCPF;
+end;
+
+function TEntidadePessoa<T>.IERG(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FIERG := Value;
+end;
+
+function TEntidadePessoa<T>.IERG: String;
+begin
+  Result := FIERG;
+end;
+
+function TEntidadePessoa<T>.Telefone(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FTelefone := Value;
+end;
+
+function TEntidadePessoa<T>.Telefone: String;
+begin
+  Result := FTelefone;
+end;
+
+function TEntidadePessoa<T>.Celular(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FCelular := Value;
+end;
+
+function TEntidadePessoa<T>.Celular: String;
+begin
+  Result := FCelular;
 end;
 
 function TEntidadePessoa<T>.IdRepresentante(Value: String): iEntidadePessoa<T>;
