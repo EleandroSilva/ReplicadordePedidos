@@ -164,7 +164,7 @@ begin
   try
     FDataSet := FQuery
                   .SQL(FSQL)
-                    .Add('where p.id=: id')
+                    .Add('where p.cnpj=: cnpj')
                   .Open
                   .DataSet;
   if not FDataSet.IsEmpty then
@@ -176,7 +176,7 @@ begin
   except
     on E: Exception do
     begin
-      ShowMessage('Erro no TDAOPedidos.GetbyParams - ao tentar encontrar pedido por cpfcnpj: ' + E.Message);
+      ShowMessage('Erro no TDAOPessoa.GetbyParams - ao tentar encontrar pessoa por CNPJ: ' + E.Message);
       Abort;
     end;
   end;

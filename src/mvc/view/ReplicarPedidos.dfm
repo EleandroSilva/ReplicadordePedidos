@@ -647,7 +647,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Caption = '&Consultar pedido(s)'
         TabOrder = 1
         OnClick = btnConsultarClick
-        ExplicitHeight = 44
       end
       object btnFinalizarPedido: TBitBtn
         Left = 233
@@ -662,7 +661,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Caption = '&Replicar pedido(s)'
         TabOrder = 2
         OnClick = btnFinalizarPedidoClick
-        ExplicitLeft = 231
       end
       object bbSair: TBitBtn
         Left = 761
@@ -696,8 +694,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           Caption = 'Imprimir'
           TabOrder = 0
           OnClick = btnImprimirClick
-          ExplicitTop = -4
-          ExplicitHeight = 43
         end
       end
       object pRiscoNavegador: TPanel
@@ -1579,6 +1575,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
     PrinterSetup.mmPaperWidth = 210000
     PrinterSetup.PaperSize = 9
     ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    BeforePrint = pprPedidoBeforePrint
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
@@ -1634,9 +1631,9 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       object ppShape1: TppShape
         DesignLayer = ppDesignLayer1
         UserName = 'Shape1'
-        mmHeight = 5027
+        mmHeight = 7669
         mmLeft = 51594
-        mmTop = 794
+        mmTop = 264
         mmWidth = 91811
         BandType = 0
         LayerName = Foreground
@@ -1656,7 +1653,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         mmHeight = 3440
         mmLeft = 75406
-        mmTop = 1588
+        mmTop = 528
         mmWidth = 45773
         BandType = 0
         LayerName = Foreground
@@ -1666,7 +1663,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         UserName = 'Shape2'
         mmHeight = 20638
         mmLeft = 0
-        mmTop = 7938
+        mmTop = 8203
         mmWidth = 197381
         BandType = 0
         LayerName = Foreground
@@ -2575,6 +2572,27 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         mmLeft = 2117
         mmTop = 40481
         mmWidth = 7874
+        BandType = 0
+        LayerName = Foreground
+      end
+      object lNomeEmpresarial: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'lNomeEmpresarial'
+        Border.mmPadding = 0
+        Caption = 'Nome Empresarial'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 83873
+        mmTop = 4233
+        mmWidth = 26988
         BandType = 0
         LayerName = Foreground
       end

@@ -2511,7 +2511,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3440
-        mmLeft = 129646
+        mmLeft = 130176
         mmTop = 40217
         mmWidth = 17727
         BandType = 0
@@ -2531,7 +2531,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3440
-        mmLeft = 90223
+        mmLeft = 90753
         mmTop = 40217
         mmWidth = 12171
         BandType = 0
@@ -2636,9 +2636,9 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         DataPipelineName = 'ppdbPedidoItens'
         mmHeight = 3440
-        mmLeft = 10583
+        mmLeft = 11113
         mmTop = 0
-        mmWidth = 79375
+        mmWidth = 78581
         BandType = 4
         LayerName = Foreground
       end
@@ -2657,7 +2657,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         DataPipelineName = 'ppdbPedidoItens'
         mmHeight = 3440
-        mmLeft = 90223
+        mmLeft = 90753
         mmTop = 0
         mmWidth = 38365
         BandType = 4
@@ -2678,7 +2678,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         DataPipelineName = 'ppdbPedidoItens'
         mmHeight = 3440
-        mmLeft = 129646
+        mmLeft = 130176
         mmTop = 0
         mmWidth = 31485
         BandType = 4
@@ -2870,7 +2870,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         DesignLayer = ppDesignLayer1
         UserName = 'DBCalc1'
         Border.mmPadding = 0
-        DataField = 'QTDE'
+        DataField = 'quantidade'
         DataPipeline = ppdbPedidoItens
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack

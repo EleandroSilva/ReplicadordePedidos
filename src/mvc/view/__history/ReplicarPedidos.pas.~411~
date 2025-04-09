@@ -333,6 +333,7 @@ type
     ppdbPrazoPagamento: TppDBPipeline;
     ppdbPedidoItens: TppDBPipeline;
     btnImprimir: TBitBtn;
+    ppLabel13: TppLabel;
 
 
     procedure FormCreate(Sender: TObject);
@@ -529,14 +530,15 @@ begin
   FController
       .FactoryDAO
         .DAOPedidosItens
-          .DataSet(DSPedidoItens)
+          .DataSet(dsPedidoItens)
           .GetbyId(dsPedidos.DataSet.FieldByName('codigopedido').AsString);
   if not dsPedidoItens.DataSet.IsEmpty then
   begin
     Result := True;
     FormatarValoresPedidoItens;
   end
-  else Result := False;
+  else
+    Result := False;
 end;
 
 function TfrmReplicarPedidos.GetPedidoPagamentos: Boolean;
@@ -731,7 +733,18 @@ begin
         ShowMessage('Replicação(ções), efetuadas com sucesso. Quatidade de pedidos replicados-> '+lQuantidadeRegistro.Caption);
 
         if MessageBox(handle, 'Deseja imprimir replicação do pedido?', 'Aviso', mb_IconQuestion or mb_Yesno) = mrYes then
+        begin
+          FController
+            .FactoryDAO
+              .DAOPedidos
+                .GetbyId(FIdPedidoAtual)
+                .DataSet(dsPedidos);
+
+          GetPedidoItens;
+          GetPedidoPagamentos;
           btnImprimir.Click;
+        end;
+
         edtPesquisa.Clear;
       end;
   end
@@ -944,12 +957,6 @@ begin
   begin
     FController
       .FactoryDAO
-        .DAOPedidos
-          .GetbyId(FIdPedidoAtual)
-          .DataSet(dsPedidos);
-
-    FController
-      .FactoryDAO
         .DAOPessoa
           .GetbyId(dsPedidos.DataSet.FieldByName('IdPessoa').AsString)
           .DataSet(dsPessoa);
@@ -960,12 +967,6 @@ begin
         .DAOPrazoPagamento
           .GetbyId(dsPedidos.DataSet.FieldByName('IdPagamento').AsString)
             .DataSet(dsPrazoPagamento);
-
-    FController
-      .FactoryDAO
-        .DAOPedidosItens
-          .GetbyId(dsPedidos.DataSet.FieldByName('IdPedido').AsString)
-          .DataSet(dsPedidoItens);
 
     pprPedido.Print;
   end

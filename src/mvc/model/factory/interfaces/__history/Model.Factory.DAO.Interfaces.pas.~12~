@@ -17,8 +17,7 @@ uses
   Model.DAO.Pessoa.Interfaces,
   Model.DAO.Prazo.Pagamento.Interfaces,
   Model.DAO.Prazo.Pagamento.Itens.Interfaces,
-  Model.DAO.Calcular.Valor.Parcela.Interfaces,
-  Model.DAO.Empresa.Interfaces;
+  Model.DAO.Calcular.Valor.Parcela.Interfaces;
 
 type
   iFactoryDAO = interface
@@ -30,7 +29,6 @@ type
     function DAOPrazoPagamento       : iDAOPrazoPagamento;
     function DAOPrazoPagamentoItens  : iDAOPrazoPagamentoItens;
     function DAOCalcularValorParcela : iDAOCalcularValorParcela;
-    function DAOEmpresa              : iDAOEmpresa;
   end;
 
 

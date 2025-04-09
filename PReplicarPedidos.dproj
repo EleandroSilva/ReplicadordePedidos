@@ -155,6 +155,10 @@
             <Form>frmViewPesquisarPagamento</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="src\mvc\model\entidade\interfaces\Model.Entidade.Empresa.Interfaces.pas"/>
+        <DCCReference Include="src\mvc\model\entidade\imp\Model.Entidade.Empresa.Imp.pas"/>
+        <DCCReference Include="src\mvc\model\DAO\interfaces\Model.DAO.Empresa.Interfaces.pas"/>
+        <DCCReference Include="src\mvc\model\DAO\imp\Model.DAO.Empresa.Imp.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -187,7 +191,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="bin\PReplicarPedidos.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\..\..\Executaveis\Supremo\PReplicarPedidos.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>PReplicarPedidos.exe</RemoteName>
                         <Overwrite>true</Overwrite>

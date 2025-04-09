@@ -18,8 +18,7 @@ uses
   Model.DAO.Pessoa.Interfaces,
   Model.DAO.Prazo.Pagamento.Interfaces,
   Model.DAO.Prazo.Pagamento.Itens.Interfaces,
-  Model.DAO.Calcular.Valor.Parcela.Interfaces,
-  Model.DAO.Empresa.Interfaces;
+  Model.DAO.Calcular.Valor.Parcela.Interfaces;
 
 type
   TFactoryDAO = class(TInterfacedObject, iFactoryDAO)
@@ -31,7 +30,6 @@ type
       FDAOPrazoPagamento       : iDAOPrazoPagamento;
       FDAOPrazoPagamentoItens  : iDAOPrazoPagamentoItens;
       FDAOCalcularValorParcela : iDAOCalcularValorParcela;
-      FDAOEmpresa              : iDAOEmpresa;
     public
       constructor Create;
       destructor Destroy; override;
@@ -44,7 +42,6 @@ type
       function DAOPrazoPagamento       : iDAOPrazoPagamento;
       function DAOPrazoPagamentoItens  : iDAOPrazoPagamentoItens;
       function DAOCalcularValorParcela : iDAOCalcularValorParcela;
-      function DAOEmpresa              : iDAOEmpresa;
   end;
 
 implementation
@@ -56,8 +53,7 @@ uses
   Model.DAO.Pessoa.Imp,
   Model.DAO.Prazo.Pagamento.Imp,
   Model.DAO.Prazo.Pagamento.Itens.Imp,
-  Mmodel.DAO.Calcular.Valor.Parcela.Imp,
-  Model.DAO.Empresa.Imp;
+  Mmodel.DAO.Calcular.Valor.Parcela.Imp;
 
 { TFactoryDAO }
 
@@ -130,14 +126,6 @@ begin
     FDAOCalcularValorParcela := TDAOCalcularValorParcela.New;
 
   Result := FDAOCalcularValorParcela;
-end;
-
-function TFactoryDAO.DAOEmpresa: iDAOEmpresa;
-begin
-  if not Assigned(FDAOEmpresa) then
-    FDAOEmpresa := TDAOEmpresa.New;
-
-  Result := FDAOEmpresa;
 end;
 
 end.

@@ -1,0 +1,83 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 09/04/2025 08:45           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.DAO.Empresa.Imp;
+
+interface
+
+uses
+  Data.DB,
+  Vcl.Dialogs,
+  System.SysUtils,
+
+  Model.DAO.Empresa.Interfaces,
+  Model.Conexao.Firedac.Interfaces,
+  Model.Conexao.Query.Interfaces,
+  Uteis.Interfaces,
+  Model.Entidade.Empresa.Interfaces;
+
+type
+  TDAOEmpresa = class(TInterfacedObject, iDAOEmpresa)
+    private
+      FEmpresa : iEntidadeEmpresa<iDAOEmpresa>;
+      FConexao : iConexao;
+      FDataSet : TDataSet;
+      FQuery   : iQuery;
+      FUteis   : iUteis;
+
+      const
+      FSQL=('select '+
+            'emp.id, '+
+            'emp.razao_social as nomeempresarial, '+
+            'emp.nome as nomefantasia, '+
+            'emp.cnpj, '+
+            'emp.ie as inscricaoestadual '+
+            'from cad_razao_social emp '
+           );
+      function OrderBy : String;
+    public
+      constructor Create;
+      destructor Destroy; override;
+      class function New : iDAOEmpresa;
+
+  end;
+
+implementation
+
+uses
+  Model.Entidade.Empresa.Imp,
+  Model.Conexao.Firedac.Firebird.Imp,
+  Model.Conexao.Query.Imp,
+  Uteis;
+
+{ TDAOEmpresa }
+
+constructor TDAOEmpresa.Create;
+begin
+  FEmpresa := TEntidadeEmpresa<iDAOEmpresa>.New(Self);
+  FConexao := TModelConexaoFiredacFirebird.New;
+  FQuery   := TQuery.New;
+  FUteis   := TUteis.New;
+end;
+
+destructor TDAOEmpresa.Destroy;
+begin
+  inherited;
+end;
+
+class function TDAOEmpresa.New: iDAOEmpresa;
+begin
+  Result := Self.Create;
+end;
+
+function TDAOEmpresa.OrderBy: String;
+begin
+  Result := 'order by emp.Razao_Social';
+end;
+
+end.

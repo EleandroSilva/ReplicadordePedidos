@@ -45,11 +45,7 @@ uses
   Model.Entidade.Calcular.Valor.Parcela.Imp in 'src\mvc\model\entidade\imp\Model.Entidade.Calcular.Valor.Parcela.Imp.pas',
   Model.DAO.Calcular.Valor.Parcela.Interfaces in 'src\mvc\model\DAO\interfaces\Model.DAO.Calcular.Valor.Parcela.Interfaces.pas',
   Mmodel.DAO.Calcular.Valor.Parcela.Imp in 'src\mvc\model\DAO\imp\Mmodel.DAO.Calcular.Valor.Parcela.Imp.pas',
-  View.Entidade.Pesquisar.Pagamento in 'src\mvc\view\Entidades\Pesquisar\View.Entidade.Pesquisar.Pagamento.pas' {frmViewPesquisarPagamento},
-  Model.Entidade.Empresa.Interfaces in 'src\mvc\model\entidade\interfaces\Model.Entidade.Empresa.Interfaces.pas',
-  Model.Entidade.Empresa.Imp in 'src\mvc\model\entidade\imp\Model.Entidade.Empresa.Imp.pas',
-  Model.DAO.Empresa.Interfaces in 'src\mvc\model\DAO\interfaces\Model.DAO.Empresa.Interfaces.pas',
-  Model.DAO.Empresa.Imp in 'src\mvc\model\DAO\imp\Model.DAO.Empresa.Imp.pas';
+  View.Entidade.Pesquisar.Pagamento in 'src\mvc\view\Entidades\Pesquisar\View.Entidade.Pesquisar.Pagamento.pas' {frmViewPesquisarPagamento};
 
 {$R *.res}
 

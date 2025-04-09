@@ -1,0 +1,126 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 09/04/2025 08:45           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.Entidade.Empresa.Imp;
+
+interface
+
+uses
+  Data.DB,
+  Datasnap.DBClient,
+  System.SysUtils,
+
+  Model.Entidade.Empresa.Interfaces;
+
+type
+  TEntidadeEmpresa <T : iInterface> = class(TInterfacedObject, iEntidadeEmpresa<T>)
+    private
+      [weak]
+      FParent            : T;
+      FId                : Integer;
+      FNomeEmpresarial   : String;
+      FNomeFantasia      : String;
+      FCNPJ              : String;
+      FInscricaoEstadual : String;
+   public
+      constructor Create(Parent : T);
+      destructor Destroy; override;
+      class function New(Parent : T) : iEntidadeEmpresa<T>;
+
+      function Id               (Value : Integer)  : iEntidadeEmpresa<T>; overload;
+      function Id                                  : Integer;             overload;
+      function NomeEmpresarial  (Value : String)   : iEntidadeEmpresa<T>; overload;
+      function NomeEmpresarial                     : String;              overload;
+      function NomeFantasia     (Value : String)   : iEntidadeEmpresa<T>; overload;
+      function NomeFantasia                        : String;              overload;
+      function CNPJ             (Value : String)   : iEntidadeEmpresa<T>; overload;
+      function CNPJ                                : String;              overload;
+      function InscricaoEstadual(Value : String)   : iEntidadeEmpresa<T>; overload;
+      function InscricaoEstadual                   : String;              overload;
+
+      function &End : T;
+  end;
+
+implementation
+
+{ TEntidadeEmpresa<T> }
+constructor TEntidadeEmpresa<T>.Create(Parent: T);
+begin
+  FParent := Parent;
+end;
+
+destructor TEntidadeEmpresa<T>.Destroy;
+begin
+  inherited;
+end;
+
+class function TEntidadeEmpresa<T>.New(Parent: T): iEntidadeEmpresa<T>;
+begin
+  Result := Self.Create(Parent);
+end;
+
+function TEntidadeEmpresa<T>.Id(Value: Integer): iEntidadeEmpresa<T>;
+begin
+
+end;
+
+function TEntidadeEmpresa<T>.Id: Integer;
+begin
+
+end;
+
+function TEntidadeEmpresa<T>.NomeEmpresarial(Value: String): iEntidadeEmpresa<T>;
+begin
+  Result  := Self;
+  FNomeEmpresarial := Value;
+end;
+
+function TEntidadeEmpresa<T>.NomeEmpresarial: String;
+begin
+  Result := FNomeEmpresarial;
+end;
+
+function TEntidadeEmpresa<T>.NomeFantasia(Value: String): iEntidadeEmpresa<T>;
+begin
+  Result := Self;
+  FNomeFantasia := Value;
+end;
+
+function TEntidadeEmpresa<T>.NomeFantasia: String;
+begin
+  Result := FNomeFantasia;
+end;
+
+function TEntidadeEmpresa<T>.CNPJ(Value: String): iEntidadeEmpresa<T>;
+begin
+  Result := Self;
+  FCNPJ  := Value;
+end;
+
+function TEntidadeEmpresa<T>.CNPJ: String;
+begin
+  Result := FCNPJ;
+end;
+
+function TEntidadeEmpresa<T>.InscricaoEstadual(Value: String): iEntidadeEmpresa<T>;
+begin
+  Result := Self;
+  Result := Value;
+end;
+
+function TEntidadeEmpresa<T>.InscricaoEstadual: String;
+begin
+  Result := FInscricaoEstadual;
+end;
+
+function TEntidadeEmpresa<T>.&End: T;
+begin
+  Result := FParent;
+end;
+
+end.

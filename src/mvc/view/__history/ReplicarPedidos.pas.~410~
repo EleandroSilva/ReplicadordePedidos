@@ -360,6 +360,7 @@ type
     procedure edtNovoClienteExit(Sender: TObject);
     procedure edtNovoPagamentoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure btnImprimirClick(Sender: TObject);
   private
     FController       : iController;
     FUteis            : iUteis;
@@ -372,8 +373,8 @@ type
     FIdNovoCliente    : String;
     FIdPagamento      : String;
     FNovoIdPagamento  : String;
-
     FValorTotalPedido : Currency;
+    FIdPedidoAtual    : Integer;
 
     function GetPedido           : Boolean;
     function GetPedidoItens      : Boolean;
@@ -403,7 +404,7 @@ type
     procedure AbilitaNovoPagamento;
     procedure DesabilitaNovoPagamento;
     //
-    procedure Imprimir(IdPedido, IdPessoa, IdPagamento : Variant);
+    procedure Imprimir;
     { Private declarations }
   public
     { Public declarations }
@@ -528,14 +529,15 @@ begin
   FController
       .FactoryDAO
         .DAOPedidosItens
-          .DataSet(DSPedidoItens)
+          .DataSet(dsPedidoItens)
           .GetbyId(dsPedidos.DataSet.FieldByName('codigopedido').AsString);
   if not dsPedidoItens.DataSet.IsEmpty then
   begin
     Result := True;
     FormatarValoresPedidoItens;
   end
-  else Result := False;
+  else
+    Result := False;
 end;
 
 function TfrmReplicarPedidos.GetPedidoPagamentos: Boolean;
@@ -730,12 +732,28 @@ begin
         ShowMessage('Replicação(ções), efetuadas com sucesso. Quatidade de pedidos replicados-> '+lQuantidadeRegistro.Caption);
 
         if MessageBox(handle, 'Deseja imprimir replicação do pedido?', 'Aviso', mb_IconQuestion or mb_Yesno) = mrYes then
+        begin
+          FController
+            .FactoryDAO
+              .DAOPedidos
+                .GetbyId(FIdPedidoAtual)
+                .DataSet(dsPedidos);
+
+          GetPedidoItens;
+          GetPedidoPagamentos;
           btnImprimir.Click;
+        end;
+
         edtPesquisa.Clear;
       end;
   end
   else
      ShowMessage('A sua escolha foi não fazer replicação. Replicação será cancelada!');
+end;
+
+procedure TfrmReplicarPedidos.btnImprimirClick(Sender: TObject);
+begin
+  Imprimir;
 end;
 
 procedure TfrmReplicarPedidos.IncluirPedido;
@@ -924,32 +942,30 @@ begin
          .Post;
   finally
     IncluiPedidoItens;
+    FIdPedidoAtual := FController
+                        .FactoryDAO
+                          .DAOPedidosItens
+                            .GenIdAtual;
     IncluiPedidoPagamentos;
   end;
 end;
 
-procedure TfrmReplicarPedidos.Imprimir(IdPedido, IdPessoa, IdPagamento : Variant);
+procedure TfrmReplicarPedidos.Imprimir;
 begin
   if not dsPedidos.DataSet.IsEmpty then
   begin
     FController
       .FactoryDAO
         .DAOPessoa
-          .GetbyId(IdPessoa)
+          .GetbyId(dsPedidos.DataSet.FieldByName('IdPessoa').AsString)
           .DataSet(dsPessoa);
 
 
     FController
       .FactoryDAO
         .DAOPrazoPagamento
-          .GetbyId(IdPagamento)
+          .GetbyId(dsPedidos.DataSet.FieldByName('IdPagamento').AsString)
             .DataSet(dsPrazoPagamento);
-
-    FController
-      .FactoryDAO
-        .DAOPedidosItens
-          .GetbyId(IdPedido)
-          .DataSet(dsPedidoItens);
 
     pprPedido.Print;
   end

@@ -333,6 +333,7 @@ type
     ppdbPrazoPagamento: TppDBPipeline;
     ppdbPedidoItens: TppDBPipeline;
     btnImprimir: TBitBtn;
+    lNomeEmpresarial: TppLabel;
 
 
     procedure FormCreate(Sender: TObject);
@@ -361,6 +362,7 @@ type
     procedure edtNovoPagamentoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure btnImprimirClick(Sender: TObject);
+    procedure pprPedidoBeforePrint(Sender: TObject);
   private
     FController       : iController;
     FUteis            : iUteis;
@@ -740,6 +742,7 @@ begin
                 .DataSet(dsPedidos);
 
           GetPedidoItens;
+          GetPedidoPagamentos;
           btnImprimir.Click;
         end;
 
@@ -1227,6 +1230,11 @@ begin
   finally
     //
   end;
+end;
+
+procedure TfrmReplicarPedidos.pprPedidoBeforePrint(Sender: TObject);
+begin
+  lNomeEmpresarial.Caption := FUteis.NomeEmpresa;
 end;
 
 procedure TfrmReplicarPedidos.rgEscolhaTipoFiltroClick(Sender: TObject);

@@ -1,0 +1,15 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 09/04/2025 08:45           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
+unit Model.Entidade.Empresa.Imp;
+
+interface
+
+implementation
+
+end.

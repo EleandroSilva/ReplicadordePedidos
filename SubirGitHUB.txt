@@ -7,11 +7,12 @@ git branch -M main
 git remote add origin https://github.com/EleandroSilva/ReplicadordePedidos.git
 git push -u origin main
 
-
+git 
 
 
 update
 …or push an existing repository from the command line
+git add .
 git status
 git commit -m "msg alteracao"
 git push

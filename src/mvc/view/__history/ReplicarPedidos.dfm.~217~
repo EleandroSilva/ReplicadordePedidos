@@ -602,7 +602,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       Color = 14778398
       ParentBackground = False
       TabOrder = 4
-      object Label1: TLabel
+      object lTextoReplicador: TLabel
         Left = 474
         Top = 0
         Width = 287
@@ -612,13 +612,12 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Caption = 'Replicador de Pedidos'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
-        Font.Height = -32
+        Font.Height = -24
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        ExplicitLeft = 426
-        ExplicitWidth = 312
-        ExplicitHeight = 39
+        ExplicitWidth = 233
+        ExplicitHeight = 29
       end
       object dbNavegador: TDBNavigator
         Left = 897
@@ -648,7 +647,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Caption = '&Consultar pedido(s)'
         TabOrder = 1
         OnClick = btnConsultarClick
-        ExplicitHeight = 44
       end
       object btnFinalizarPedido: TBitBtn
         Left = 233
@@ -663,7 +661,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Caption = '&Replicar pedido(s)'
         TabOrder = 2
         OnClick = btnFinalizarPedidoClick
-        ExplicitLeft = 231
       end
       object bbSair: TBitBtn
         Left = 761
@@ -697,8 +694,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           Caption = 'Imprimir'
           TabOrder = 0
           OnClick = btnImprimirClick
-          ExplicitTop = -4
-          ExplicitHeight = 43
         end
       end
       object pRiscoNavegador: TPanel
@@ -1580,6 +1575,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
     PrinterSetup.mmPaperWidth = 210000
     PrinterSetup.PaperSize = 9
     ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    BeforePrint = pprPedidoBeforePrint
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
@@ -1635,9 +1631,9 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       object ppShape1: TppShape
         DesignLayer = ppDesignLayer1
         UserName = 'Shape1'
-        mmHeight = 5027
+        mmHeight = 8464
         mmLeft = 51594
-        mmTop = 794
+        mmTop = 264
         mmWidth = 91811
         BandType = 0
         LayerName = Foreground
@@ -1657,7 +1653,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         mmHeight = 3440
         mmLeft = 75406
-        mmTop = 1588
+        mmTop = 1058
         mmWidth = 45773
         BandType = 0
         LayerName = Foreground
@@ -1665,9 +1661,9 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       object ppShape2: TppShape
         DesignLayer = ppDesignLayer1
         UserName = 'Shape2'
-        mmHeight = 20638
+        mmHeight = 19843
         mmLeft = 0
-        mmTop = 7938
+        mmTop = 8733
         mmWidth = 197381
         BandType = 0
         LayerName = Foreground
@@ -2512,7 +2508,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3440
-        mmLeft = 129646
+        mmLeft = 130176
         mmTop = 40217
         mmWidth = 17727
         BandType = 0
@@ -2532,7 +2528,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3440
-        mmLeft = 90223
+        mmLeft = 90753
         mmTop = 40217
         mmWidth = 12171
         BandType = 0
@@ -2576,6 +2572,27 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         mmLeft = 2117
         mmTop = 40481
         mmWidth = 7874
+        BandType = 0
+        LayerName = Foreground
+      end
+      object lNomeEmpresarial: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'lNomeEmpresarial'
+        Border.mmPadding = 0
+        Caption = 'Nome Empresarial'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 83873
+        mmTop = 4498
+        mmWidth = 26988
         BandType = 0
         LayerName = Foreground
       end
@@ -2637,9 +2654,9 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         DataPipelineName = 'ppdbPedidoItens'
         mmHeight = 3440
-        mmLeft = 10583
+        mmLeft = 11113
         mmTop = 0
-        mmWidth = 79375
+        mmWidth = 78581
         BandType = 4
         LayerName = Foreground
       end
@@ -2658,7 +2675,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         DataPipelineName = 'ppdbPedidoItens'
         mmHeight = 3440
-        mmLeft = 90223
+        mmLeft = 90753
         mmTop = 0
         mmWidth = 38365
         BandType = 4
@@ -2679,7 +2696,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         DataPipelineName = 'ppdbPedidoItens'
         mmHeight = 3440
-        mmLeft = 129646
+        mmLeft = 130176
         mmTop = 0
         mmWidth = 31485
         BandType = 4
@@ -2871,7 +2888,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         DesignLayer = ppDesignLayer1
         UserName = 'DBCalc1'
         Border.mmPadding = 0
-        DataField = 'QTDE'
+        DataField = 'quantidade'
         DataPipeline = ppdbPedidoItens
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack

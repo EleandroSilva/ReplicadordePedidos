@@ -647,7 +647,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Caption = '&Consultar pedido(s)'
         TabOrder = 1
         OnClick = btnConsultarClick
-        ExplicitHeight = 44
       end
       object btnFinalizarPedido: TBitBtn
         Left = 233
@@ -662,7 +661,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Caption = '&Replicar pedido(s)'
         TabOrder = 2
         OnClick = btnFinalizarPedidoClick
-        ExplicitLeft = 231
       end
       object bbSair: TBitBtn
         Left = 761
@@ -696,8 +694,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           Caption = 'Imprimir'
           TabOrder = 0
           OnClick = btnImprimirClick
-          ExplicitTop = -4
-          ExplicitHeight = 43
         end
       end
       object pRiscoNavegador: TPanel
@@ -2511,7 +2507,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3440
-        mmLeft = 129646
+        mmLeft = 130176
         mmTop = 40217
         mmWidth = 17727
         BandType = 0
@@ -2531,7 +2527,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3440
-        mmLeft = 90223
+        mmLeft = 90753
         mmTop = 40217
         mmWidth = 12171
         BandType = 0
@@ -2575,6 +2571,26 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         mmLeft = 2117
         mmTop = 40481
         mmWidth = 7874
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel13: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'lNomeEmpresarial'
+        Border.mmPadding = 0
+        Caption = 'Nome Empresarial'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 87313
+        mmTop = 5821
+        mmWidth = 22490
         BandType = 0
         LayerName = Foreground
       end
@@ -2636,9 +2652,9 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         DataPipelineName = 'ppdbPedidoItens'
         mmHeight = 3440
-        mmLeft = 10583
+        mmLeft = 11113
         mmTop = 0
-        mmWidth = 79375
+        mmWidth = 78581
         BandType = 4
         LayerName = Foreground
       end
@@ -2657,7 +2673,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         DataPipelineName = 'ppdbPedidoItens'
         mmHeight = 3440
-        mmLeft = 90223
+        mmLeft = 90753
         mmTop = 0
         mmWidth = 38365
         BandType = 4
@@ -2678,7 +2694,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Transparent = True
         DataPipelineName = 'ppdbPedidoItens'
         mmHeight = 3440
-        mmLeft = 129646
+        mmLeft = 130176
         mmTop = 0
         mmWidth = 31485
         BandType = 4
@@ -2870,7 +2886,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         DesignLayer = ppDesignLayer1
         UserName = 'DBCalc1'
         Border.mmPadding = 0
-        DataField = 'QTDE'
+        DataField = 'quantidade'
         DataPipeline = ppdbPedidoItens
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
