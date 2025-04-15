@@ -1,6 +1,6 @@
 {*******************************************************}
 {                      Be More Web                      }
-{          InÌcio do projeto 26/02/2025 17:02           }
+{          In√≠cio do projeto 26/02/2025 17:02           }
 {                 www.bemoreweb.com.br                  }
 {                     (17)98169-5336                    }
 {                        2003/2025                      }
@@ -39,8 +39,8 @@ type
                   '  ipp.num_pgto as NumeroPagamento, '+
                   '  pgto.pg_com as PagouComo, '+
                   '  ipp.qtde_dias as QuantidadeDeDias, '+
-                  '   current_date + ipp.qtde_dias as DataVencimento, '+
-                  '   coalesce(cast((p.total / pp.qtde_pgto) as numeric(18,3)), 0) as ValorParcela '+
+                  '  current_date + ipp.qtde_dias as DataVencimento, '+
+                  '  coalesce(cast((p.total / pp.qtde_pgto) as numeric(18,3)), 0) as ValorParcela '+
                   'from cad_prazo pp '+
                   'inner join cad_ped p          on p.cod_pgto    = pp.cod_prazo '+
                   'inner join cad_pgto_ped  pgto on pgto.idpedido = p.id '+
@@ -63,7 +63,7 @@ type
                  'select '+
                  '   parc.ValorTotalPedido, '+
                  '   parc.IdPedido, '+
-                 '  parc.CodigoPedido, '+
+                 '   parc.CodigoPedido, '+
                  '   parc.IdPagamento, '+
                  '   parc.QuantidadePagamento, '+
                  '   parc.NumeroPagamento, '+
@@ -71,7 +71,7 @@ type
                  '   parc.PagouComo, '+
                  '   parc.QuantidadeDeDias, '+
                  '   case when parc.NumeroPagamento = parc.QuantidadePagamento then '+
-                 '           parc.ValorParcela + (sp.ValorTotalPedido - sp.SomaParcelas) '+
+                 '             parc.ValorParcela + (sp.ValorTotalPedido - sp.SomaParcelas) '+
                  '   else parc.ValorParcela '+
                  '   end as valorparcela '+
                  'from Parcelas parc '+
@@ -170,7 +170,7 @@ begin
       Somar(FDataSet.FieldByName('QuantidadedePagamento').AsInteger);
     end
     else
-    ShowMessage('Registro n„o encontrado, para calcular valor das parcelas!');
+    ShowMessage('Registro n√£o encontrado, para calcular valor das parcelas!');
   except
     on E: Exception do
     begin
