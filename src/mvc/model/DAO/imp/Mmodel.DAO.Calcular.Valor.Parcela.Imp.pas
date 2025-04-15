@@ -164,8 +164,7 @@ begin
   if not FDataSet.IsEmpty then
   begin
     FCalcularValorParcela
-                .ValorParcela(StrToFloat(FormatFloat('0.00',
-                         FCalcularValorParcela.ValorTotalPedido / FDataSet.FieldByName('QuantidadedePagamento').AsInteger)));
+                .ValorParcela(StrToFloat(FormatFloat('0.00', FCalcularValorParcela.ValorTotalPedido / FDataSet.FieldByName('QuantidadedePagamento').AsInteger)));
     if FCalcularValorParcela.PrazoPagamentoItens.NumeroPagamento = 1 then
       Somar(FDataSet.FieldByName('QuantidadedePagamento').AsInteger);
     end
