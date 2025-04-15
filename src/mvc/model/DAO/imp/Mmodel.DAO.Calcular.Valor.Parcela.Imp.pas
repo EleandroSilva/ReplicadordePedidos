@@ -169,7 +169,7 @@ begin
       Somar(FDataSet.FieldByName('QuantidadedePagamento').AsInteger);
     end
     else
-    ShowMessage('Registro não encontrado, para calcular valor das parcelas!');
+      ShowMessage('Registro não encontrado, para calcular valor das parcelas!');
   except
     on E: Exception do
     begin
